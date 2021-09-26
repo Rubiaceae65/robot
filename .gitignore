@@ -1,0 +1,9 @@
+*.swp
+ros-workspace/build/
+ros-workspace/devel/
+ros-workspace/install.colcon/
+ros-workspace/log/
+ros-workspace/moveit/
+ros-workspace/build.catkin/
+ros-workspace/build.colcon/
+

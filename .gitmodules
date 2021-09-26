@@ -1,0 +1,20 @@
+[submodule "ros-workspace/src/driver_mpu9250"]
+	path = ros-workspace/src/driver_mpu9250
+	url = https://github.com/pcdangio/ros-driver_mpu9250.git
+[submodule "ros-workspace/src/hoverboard_driver"]
+	path = ros-workspace/src/hoverboard_driver
+  #url = https://github.com/alex-makarov/hoverboard-driver.git
+  url = https://github.com/PaddyCube/hoverboard-driver.git
+[submodule "ros-workspace/src/ar_track_alvar"]
+	path = ros-workspace/src/ar_track_alvar
+	url = https://github.com/pmusau17/ar_track_alvar.git
+	branch = noetic-devel
+[submodule "ros-workspace/src/ros-sensor_msgs_ext"]
+	path = ros-workspace/src/ros-sensor_msgs_ext
+	url = https://github.com/pcdangio/ros-sensor_msgs_ext.git
+[submodule "ros-workspace/src/orb_slam_2_ros"]
+	path = ros-workspace/src/orb_slam_2_ros
+	url = https://github.com/appliedAI-Initiative/orb_slam_2_ros.git
+[submodule "ros-workspace/src/hoverboard-driver"]
+	path = ros-workspace/src/hoverboard-driver
+	url = https://github.com/PaddyCube/hoverboard-driver.git

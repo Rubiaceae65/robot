@@ -1,0 +1,29 @@
+{
+  "name": "ros",
+  "image": "lala432/ubuntu-vnc:latest",
+  "forwardPorts": [6080],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "runArgs": [ 
+    "--device-cgroup-rule=c 13:* rmw", 
+   "--device-cgroup-rule=c 188:* rmw", 
+   "--device-cgroup-rule=c 81:* rmw", 
+    "-v", 
+    "/run/udev:/run/udev:ro", 
+    "-v", 
+    "/dev:/dev"
+  ],
+
+  "forwardPorts": [3000,5900,5901,5902],
+
+
+  "containerUser": "user",
+  "updateRemoteUserUID":false,
+  "containerEnv": {
+    "HOME": "/home/user"
+},
+  "remoteUser": "user",
+  "overrideCommand": false
+
+}
