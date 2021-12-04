@@ -1,0 +1,58 @@
+{{- if eq .Values.simulation.enabled false -}}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-joy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-joy
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-joy
+      annotations:
+        lala: asdf
+    spec:
+      volumes:
+        - name: input
+          hostPath:
+            path: /dev/input/
+            type: Directory
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+      nodeSelector:
+        robot: pi
+      containers:
+        - name: joy
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            privileged: true
+          image: 'lala432/ros-dev:latest'
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: joy
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: input
+              mountPath: /dev/input
+
+  strategy:
+    type: Recreate
+{{- end }}

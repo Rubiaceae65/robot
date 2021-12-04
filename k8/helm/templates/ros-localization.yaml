@@ -1,0 +1,47 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-loc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-loc
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-loc
+      annotations:
+        lala: asdf
+    spec:
+      volumes:
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+          #      nodeSelector:
+            # robot: 6500
+      containers:
+        - name: loc
+          image: 'lala432/ros-dev:latest'
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: localization
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+
+  strategy:
+    type: Recreate
+

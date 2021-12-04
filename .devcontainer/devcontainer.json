@@ -1,6 +1,6 @@
 {
   "name": "ros",
-  "image": "lala432/ubuntu-vnc:latest",
+  "image": "lala432/ros-dev:latest",
   "forwardPorts": [6080],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
@@ -9,21 +9,48 @@
     "--device-cgroup-rule=c 13:* rmw", 
    "--device-cgroup-rule=c 188:* rmw", 
    "--device-cgroup-rule=c 81:* rmw", 
-    "-v", 
-    "/run/udev:/run/udev:ro", 
-    "-v", 
-    "/dev:/dev"
+   "--device-cgroup-rule=c 189:* rmw", 
+   "--device-cgroup-rule=c 226:* rmw", 
+   "--name=rosdev",
+   "--hostname=rosdev",  
+   "-v","/home/user/.Xauthority:/root/.Xauthority:ro",
+   "-v","/tmp/.X11-unix/X0:/tmp/.X11-unix/X0:rw",
+   "-v", "/run/udev:/run/udev:ro", 
+   "-v","/dev:/dev",
+   "-v","/home/user/.ssh/id_rsa:/home/user/.ssh/id_rsa",
+`  "-v","/home/user/.ssh/id_rsa.pub:/home/user/.ssh/id_rsa.pub"
   ],
 
-  "forwardPorts": [3000,5900,5901,5902],
+  "forwardPorts": [3000,5900,5901,5902,9090],
+  "appPort": ["11311:11311", , "8000:8000", "9090:9090", "9000:9000", "10000-10100:10000-10100"],
+
+  "10000-10100:10000-10100": {
+    "label": "ros auto ports",
+    "onAutoForward": "notify",
+   "--device", "/dev/dri:/devA/dri",
+    "ROS_WS": "/home/user/ros-workspace",
+    "ROS_IP": "192.168.2.11",
+    "ROS_MASTER_URI": "http://192.168.2.11:11311"
+  },
 
 
   "containerUser": "user",
   "updateRemoteUserUID":false,
   "containerEnv": {
-    "HOME": "/home/user"
+    "HOME": "/home/user",
+   "SSH_IP": "192.168.2.207",
+    "ROS_CONF": "vscode",
+    "ROS_IP": "127.0.0.1",
+    "ROS_MASTER_URI": "http://127.0.0.1:11311",
+    "ROS_WS": "/workspaces/robot2/ros-workspace",
+    "LAUNCH_HW": "false",
+    "DISPLAY": ":0"
 },
   "remoteUser": "user",
-  "overrideCommand": false
+  "overrideCommand": false,
+"initializeCommand": "docker pull lala432/ros-dev:latest",
+"extensions": [
+	"okteto.remote-kubernetes"
+],
 
 }

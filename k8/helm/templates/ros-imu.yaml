@@ -1,0 +1,56 @@
+{{- if eq .Values.simulation.enabled false -}}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-imu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-imu
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-imu
+      annotations:
+        lala: asdf
+    spec:
+      volumes:
+        - name: i2c-1
+          hostPath:
+            path: /dev/i2c-1
+            type: File 
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+      nodeSelector:
+        robot: pi
+      containers:
+        - name: imu
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            privileged: true
+          image: 'lala432/ros-dev:latest'
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: imu
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+
+  strategy:
+    type: Recreate
+{{- end }}

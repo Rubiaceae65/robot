@@ -1,3 +1,7 @@
+[submodule "ros-workspace/src/iai_kinect2"]
+	path = ros-workspace/src/iai_kinect2
+	url = https://github.com/mihirk2309/iai_kinect2.git
+	branch = noetic/devel
 [submodule "ros-workspace/src/driver_mpu9250"]
 	path = ros-workspace/src/driver_mpu9250
 	url = https://github.com/pcdangio/ros-driver_mpu9250.git
@@ -18,3 +22,30 @@
 [submodule "ros-workspace/src/hoverboard-driver"]
 	path = ros-workspace/src/hoverboard-driver
 	url = https://github.com/PaddyCube/hoverboard-driver.git
+[submodule "firmware/hoverboard-sideboard-hack-STM"]
+	path = firmware/hoverboard-sideboard-hack-STM
+	url = https://github.com/EmanuelFeru/hoverboard-sideboard-hack-STM.git
+[submodule "ros-workspace/src/rosserial_stm32"]
+	path = ros-workspace/src/rosserial_stm32
+	url = https://github.com/yoneken/rosserial_stm32.git
+[submodule "k8/k8s-host-device-plugin"]
+	path = k8/k8s-host-device-plugin
+	url = https://github.com/everpeace/k8s-host-device-plugin.git
+[submodule "ros-workspace/src/i2c_imu"]
+	path = ros-workspace/src/i2c_imu
+	url = https://github.com/jeskesen/i2c_imu.git
+[submodule "ros-workspace/src/rtimulib_ros"]
+	path = ros-workspace/src/rtimulib_ros
+	url = https://github.com/romainreignier/rtimulib_ros.git
+[submodule "ros-workspace/src/openni_camera"]
+	path = ros-workspace/src/openni_camera
+	url = https://github.com/ros-drivers/openni_camera.git
+[submodule "ros-workspace/src/teleop_twist_web"]
+	path = ros-workspace/src/teleop_twist_web
+	url = https://github.com/tue-robotics/teleop_twist_web.git
+[submodule "ros-workspace/src/gazebo_ros_2Dmap_plugin"]
+	path = ros-workspace/src/gazebo_ros_2Dmap_plugin
+	url = https://github.com/marinaKollmitz/gazebo_ros_2Dmap_plugin.git
+[submodule "ros-workspace/src/map2gazebo"]
+	path = ros-workspace/src/map2gazebo
+	url = https://github.com/shilohc/map2gazebo.git

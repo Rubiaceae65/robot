@@ -1,0 +1,97 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: gzserver
+    annotations:
+      metallb.universe.tf/allow-shared-ip: "ros"
+
+spec:
+    ports:
+      - name: gazebo
+        port: 11345
+        targetPort: 11345
+      - name: teleop
+        port: 8002
+        targetPort: 8002
+      - name: gzweb
+        port: 8001
+        targetPort: 8001
+      - name: websockmaybe
+        port: 42021
+        targetPort: 42021
+      - name: websock
+        port: 9090
+        targetPort: 9090
+
+
+
+
+    selector:
+      app: ros-gazebo
+        #type: ClusterIP
+    type: LoadBalancer
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-gazebo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-gazebo
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-gazebo
+      annotations:
+        lala: asdf
+    spec:
+      volumes:
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+          #      nodeSelector:
+            # robot: 6500
+      containers:
+        - name: gzserver
+          image: 'lala432/ros-dev:latest'
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: gzserver
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+        - name: gzweb
+          image: 'lala432/ros-dev:latest'
+          imagePullPolicy: Always
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: gzweb
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+
+  strategy:
+    type: Recreate
+

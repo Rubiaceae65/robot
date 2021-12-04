@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>robot</title>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript" src="http://static.robotwebtools.org/EaselJS/current/easeljs.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/ros2djs/current/ros2d.min.js"></script>
+    <script type="text/javascript" src="nav2d.js"></script>
+    <script type="text/javascript">
+      var host = "192.168.2.209"
+      function init() {
+              // Connect to ROS.
+              var ros = new ROSLIB.Ros({
+                      url : 'ws://' + host + ':9090'
+                    });
+
+              // Create the main viewer.
+              var viewer = new ROS2D.Viewer({
+                      divID : 'nav',
+                      width : 750,
+                      height : 800
+                    });
+
+              // Setup the nav client.
+              var nav = NAV2D.OccupancyGridClientNav({
+                      ros : ros,
+                      rootObject : viewer.scene,
+                      viewer : viewer,
+                      serverName : '/move_base'
+                    });
+            }
+    </script>
+
+    <style>
+iframe {
+  overflow: scroll;
+  width: 1349px;
+  height: 100%;
+  border: 1px solid black;
+}
+    </style>
+  </head>
+</html>
+
+<body onload="init()">
+  <h1>Simple Navigation Example</h1>
+
+  <div id="nav"></div>
+
+  <h1> all links </h1>
+  <div>
+    {{ thelist }}
+  </div>
+  <!--
+    <ul>
+    <li> <a href="http://192.168.2.205:8086/" target="iframe"> influx </a></li>
+    <li> <a href="https://google.com" target="iframe"> {{ the }} </a></li>
+    </ul>
+  -->
+
+  <iframe name="iframe" src="about:blank" width="50%" height="50%" scrolling="yes"></iframe>
+
+</body>
+</html>

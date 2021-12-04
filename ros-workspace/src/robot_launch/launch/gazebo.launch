@@ -1,0 +1,49 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="false" />
+    <arg name="gui" value="true" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="false"/>
+    <arg name="headless" value="false"/>
+    <arg name="verbose" value="true"/> 
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robot_launch)/urdf/test.urdf.xacro"/>  
+  <!--Launch Gazebo Simulator-->
+  <!--
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model test" output="screen"/>
+-->
+<!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+<node name="urdf_spawner" 
+      pkg="gazebo_ros" 
+      type="spawn_model" 
+      respawn="false" 
+      output="screen"
+      args="-urdf -model test -param robot_description -x 0 -y 0 -z 0.085 -R 0 -P 0 -Y 0"
+      />
+  <!-- Launch teleop -->
+  <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e" /> -->
+
+  <!-- Launch the websocket server (communication via roslib) -->
+<!--  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" /> -->
+
+  <node name="rosbridge_websocket_twist" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+    <param name="authenticate" value="false" />
+    <param name="port" value="9090"/>
+  </node>
+  <node name="rosapi" pkg="rosapi" type="rosapi_node" />
+
+  <!-- Start the simple webserver to handle static files -->
+  <node pkg="teleop_twist_web" type="webserver.py" name="teleop_twist_web" output="screen">
+      <param name="port" value="8080" />
+      <rosparam param="index_names">
+          - index.html
+      </rosparam>
+  </node>
+
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+<!--  <node name="rviz" pkg="rviz" type="rviz" required="true"/> -->
+
+</launch>

@@ -1,0 +1,23 @@
+<launch>
+
+
+
+<node name="nmea_serial_driver_node" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen">
+    <param name="port" value="/dev/ttyUSB0"/>
+    <param name="baud" value="9600" />
+    <param name="frame_id" value="gps" />
+    <param name="use_GNSS_time" value="False" />
+    <param name="time_ref_source" value="False" />
+    <param name="useRMC" value="False" />
+  </node>
+
+
+<node name="mpu_driver" pkg="driver_mpu9250" type="driver_mpu9250_rpi" output="screen">
+<!-- pin 13 -->
+  <param name="interrupt_gpio_pin" value="27" />
+  </node>
+
+
+
+
+</launch>

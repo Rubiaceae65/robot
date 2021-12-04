@@ -6,4 +6,8 @@ ros-workspace/log/
 ros-workspace/moveit/
 ros-workspace/build.catkin/
 ros-workspace/build.colcon/
+*/__pycache__
 
+
+# Ignore DevSpace cache and log folder
+.devspace/

@@ -1,0 +1,13 @@
+<launch>
+
+
+
+<node name="mpu_driver" pkg="driver_mpu9250" type="driver_mpu9250_rpi" output="screen">
+<!-- pin 13 -->
+  <param name="interrupt_gpio_pin" value="27" />
+  </node>
+
+
+
+
+</launch>

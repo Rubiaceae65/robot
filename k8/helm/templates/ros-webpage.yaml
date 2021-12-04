@@ -1,0 +1,129 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: ros-web
+    annotations:
+      metallb.universe.tf/allow-shared-ip: "ros"
+spec:
+    ports:
+      - name: httpframe
+        port: 8002
+        targetPort: 8002
+      - name: capra
+        port: 88
+        targetPort: 88
+
+    selector:
+      app: ros-web
+        #type: ClusterIP
+    type: LoadBalancer
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-service-access
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: read-services
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "watch", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-services
+  #namespace: simul
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: read-services
+subjects:
+- kind: ServiceAccount
+  name: pod-service-access
+  #namespace: sim
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros-web
+  labels:
+    app: ros-web
+spec:
+   
+  selector:
+    matchLabels:
+      app: ros-web
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ros-web
+    spec:
+      volumes:
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+      serviceAccount: pod-service-access
+      containers:
+      - image: lala432/ros-dev:latest
+        imagePullPolicy: Always
+        name: pyweb
+        command: 
+            - /scripts/ros-run.sh
+        env:
+          - name: ROS_WS
+            value: /home/user/ros-workspace
+          - name: ROS_MASTER_URI
+            value: http://robot-ros-master:11311/ 
+          - name: LAUNCH
+            value: web
+
+        volumeMounts:
+          - name: scripts
+            mountPath: /scripts
+      - image: lala432/ros-dev:latest
+        imagePullPolicy: Always
+        name: capraweb-ui
+        command: 
+            - /scripts/ros-run.sh
+        env:
+          - name: ROS_WS
+            value: /home/user/ros-workspace
+          - name: ROS_MASTER_URI
+            value: http://robot-ros-master:11311/ 
+          - name: LAUNCH
+            value: capra_web
+
+        volumeMounts:
+          - name: scripts
+            mountPath: /scripts
+      - image: lala432/ros-dev:latest
+        imagePullPolicy: Always
+        name: capraweb-description
+        command: 
+            - /scripts/ros-run.sh
+        env:
+          - name: ROS_WS
+            value: /home/user/ros-workspace
+          - name: ROS_MASTER_URI
+            value: http://robot-ros-master:11311/ 
+          - name: LAUNCH
+            value: capra_description
+
+        volumeMounts:
+          - name: scripts
+            mountPath: /scripts
+

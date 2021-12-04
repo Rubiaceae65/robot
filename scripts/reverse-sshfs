@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# from: https://github.com/rom1v/rsshfs/blob/master/rsshfs
+set -eu
+
+if [[ $# -lt 2 ]]
+then
+    printf "Error: missing parameters\n" >&2
+    printf "Usage:\n" >&2
+    printf "  $0 <remotehost> <localpath> <remotepath>" >&2
+    exit 1;
+fi
+
+rhost="$1"
+qlpath="$2"
+qrpath="$3"
+
+ssh "$rhost" apt -y install fuse sshfs
+
+ssh "$rhost" fusermount -u "$qrpath" || true
+ssh "$rhost" mkdir -p "$qrpath" || true
+
+#rhost="root@192.168.1.113"
+#qlpath=/c/puppet/code
+#qrpath=/etc/puppet/code
+
+fifo=$(mktemp -u)
+mkfifo -m 600 "$fifo"  &&
+
+
+< "$fifo" /usr/lib/openssh/sftp-server "-R" |
+ssh "$rhost" sshfs -o slave ":$qlpath" "$qrpath" -o idmap=user -o ro > "$fifo"
+
+rm "$fifo"
+

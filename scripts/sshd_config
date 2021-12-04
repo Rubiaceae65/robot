@@ -1,0 +1,14 @@
+#AuthorizedKeysFile /scripts/authorized_keys
+PermitRootLogin yes
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# override default of no subsystems
+Subsystem	sftp	/usr/lib/openssh/sftp-server
+X11Forwarding yes
+X11DisplayOffset 10
+X11UseLocalhost yes
+
+

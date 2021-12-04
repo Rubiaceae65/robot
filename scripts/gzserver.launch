@@ -1,0 +1,44 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find robot_launch)/worlds/test.world"/>
+    <arg name="debug" value="false" />
+    <arg name="gui" value="false" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="false"/>
+    <arg name="headless" value="true"/>
+    <arg name="verbose" value="true"/> 
+    <arg name="server_required" value="true"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robot_launch)/urdf/test.urdf.xacro"/>  
+
+<!--
+<node name="urdf_spawner" 
+      pkg="gazebo_ros" 
+      type="spawn_model" 
+      respawn="false" 
+      output="screen"
+      args="-urdf -model test -param robot_description -x 0 -y 0 -z 0.085 -R 0 -P 0 -Y 0"
+      />
+-->
+
+<node name="rosbridge_websocket_twist" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+    <param name="authenticate" value="false" />
+    <param name="port" value="9090"/>
+  </node>
+  <node name="rosapi" pkg="rosapi" type="rosapi_node" />
+
+  <node pkg="teleop_twist_web" type="webserver.py" name="teleop_twist_web" output="screen">
+      <param name="port" value="8002" />
+      <rosparam param="index_names">
+          - index.html
+      </rosparam>
+  </node>
+
+<!--
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+-->
+<!--  <node name="rviz" pkg="rviz" type="rviz" required="true"/> -->
+
+</launch>

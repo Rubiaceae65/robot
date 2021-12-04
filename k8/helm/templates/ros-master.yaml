@@ -1,0 +1,68 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-master
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-master
+    spec:      
+      volumes:
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+
+
+      containers:
+        - name: master
+          image: 'lala432/ros-dev:latest'
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: BIND_PORT_RANGE
+              value: 10000-12000  
+            - name: LAUNCH
+              value: master
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+ 
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1000
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: robot-ros-master
+spec:
+  clusterIP: None
+  selector:
+    app: ros-master
+  ports:
+    - protocol: TCP
+      port: 11311
+      targetPort: 11311
