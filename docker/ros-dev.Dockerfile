@@ -79,21 +79,60 @@ RUN npm i
 WORKDIR /home/user
 RUN wget https://github.com/clubcapra/capra_web_ui/releases/download/v2.3.14/capra_web_ui_setup.deb 
 RUN apt-get -y install libsecret-1-0 libnotify4 libappindicator3-1
-RUN dpkg -i capra_web_ui_setup.deb
+#FIXME broken on arm$ RUN dpkg -i capra_web_ui_setup.deb
 # Copy ros workspace
 USER root
 WORKDIR /home/user
 RUN mkdir -p $ROS_WS 
-ADD --chown=user:user ros-workspace $ROS_WS
-RUN chown user:user $ROS_WS
 
-#build ros workspace, using a cached version
-#USER user
-WORKDIR $ROS_WS
-  RUN apt-get -y install ninja-build stow fuse sshfs libceres-dev lua5.3 liblua5.3-dev ros-noetic-hector-gazebo
-RUN src/cartographer/scripts/install_abseil.sh
+
+RUN apt-get update ; apt-get -y install ninja-build stow fuse sshfs libceres-dev lua5.3 liblua5.3-dev ros-noetic-hector-gazebo
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN apt-get -y install libgmock-dev ros-noetic-tf2-tools ros-noetic-tf2-2d ros-noetic-tf2-bullet ros-noetic-tf2-sensor-msgs ros-noetic-tf2-web-republisher python3-rosgraph python3-std-msgs python3-rosgraph-msgs python3-roslib python3-rospy python3-actionlib python3-geometry-msgs python3-tf2 python3-tf2-ros
+RUN apt-get -y install libmng2 qt5-image-formats-plugins ros-noetic-gazebo-ros-control-select-joints ros-noetic-hector-components-description ros-noetic-hector-compressed-map-transport ros-noetic-hector-compressed-map-transport-dbgsym ros-noetic-hector-gazebo-plugins-dbgsym \
+  ros-noetic-hector-gazebo-thermal-camera-dbgsym ros-noetic-hector-geotiff ros-noetic-hector-geotiff-dbgsym ros-noetic-hector-geotiff-launch ros-noetic-hector-geotiff-plugins ros-noetic-hector-geotiff-plugins-dbgsym ros-noetic-hector-imu-attitude-to-tf \
+  ros-noetic-hector-imu-attitude-to-tf-dbgsym ros-noetic-hector-imu-tools ros-noetic-hector-imu-tools-dbgsym ros-noetic-hector-localization ros-noetic-hector-map-server ros-noetic-hector-map-server-dbgsym ros-noetic-hector-map-tools ros-noetic-hector-mapping \
+  ros-noetic-hector-mapping-dbgsym ros-noetic-hector-marker-drawing ros-noetic-hector-models ros-noetic-hector-nav-msgs ros-noetic-hector-pose-estimation ros-noetic-hector-pose-estimation-core ros-noetic-hector-pose-estimation-core-dbgsym ros-noetic-hector-pose-estimation-dbgsym \
+  ros-noetic-hector-sensors-description ros-noetic-hector-sensors-gazebo ros-noetic-hector-slam ros-noetic-hector-slam-launch ros-noetic-hector-trajectory-server ros-noetic-hector-trajectory-server-dbgsym ros-noetic-hector-xacro-tools ros-noetic-message-to-tf \
+  ros-noetic-velodyne-gazebo-plugins ros-noetic-depthimage-to-laserscan \
+  ros-noetic-turtlebot3-gazebo ros-noetic-turtlebot3
+
+RUN apt-get -y install libsdformat-dev libgazebo11-dev libgazebo11 
+
+RUN apt -y remove gazebo11 ros-noetic-gazebo-*
+RUN apt -y install gazebo11 ros-noetic-gazebo-*
+
+
+#RUN ls -lhtr /home/user/* ; false
+#RUN chown -R user:user /home/user/.ros
+RUN --mount=type=cache,mode=0777,uid=1000,id=ccache_$TARGETPLATFORM,target=$CCACHE_DIR chown -R user:user $CCACHE_DIR
+
+RUN apt-get -y install ros-noetic-rtabmap ros-noetic-rtabmap-ros python3-pydispatch
+
+RUN pip3 install ws4py  
+ADD --chown=user:user ros-workspace $ROS_WS
+#RUN chown user:user $ROS_WS
+USER root
+
+WORKDIR $ROS_WS
+RUN --mount=type=cache,mode=0777,uid=1000,id=ccache_$TARGETPLATFORM,target=$CCACHE_DIR src/cartographer/scripts/install_abseil.sh
+
+RUN chown -R user:user /home/user/.config
+
+RUN --mount=type=cache,mode=0777,uid=1000,id=ccache_$TARGETPLATFORM,target=$CCACHE_DIR chmod -R a+rwx /ccache
+RUN --mount=type=cache,mode=0777,uid=1000,id=r_build_$TARGETPLATFORM,target=$ROS_WS/build \
+    --mount=type=cache,mode=0777,uid=1000,id=r_install_$TARGETPLATFORM,target=$ROS_WS/install \
+    --mount=type=cache,mode=0777,uid=1000,id=r_devel_$TARGETPLATFORM,target=$ROS_WS/devel \
+    --mount=type=cache,mode=0777,uid=1000,id=ccache_$TARGETPLATFORM,target=$CCACHE_DIR \
+    chown user:user $ROS_WS/build ; chown user:user $ROS_WS/install ; chown user:user $ROS_WS/devel ; chmod -R a+rwx $ROS_WS/build ; chmod -R a+rwx $ROS_WS/install ; chmod -R a+rwx $ROS_WS/devel
+
+
+
+
+#build ros workspace, using a cached version
+USER root
+WORKDIR $ROS_WS
+
 RUN --mount=type=cache,mode=0777,uid=1000,id=r_build_$TARGETPLATFORM,target=$ROS_WS/build \
     --mount=type=cache,mode=0777,uid=1000,id=r_install_$TARGETPLATFORM,target=$ROS_WS/install \
     --mount=type=cache,mode=0777,uid=1000,id=r_devel_$TARGETPLATFORM,target=$ROS_WS/devel \
@@ -105,6 +144,10 @@ RUN --mount=type=cache,mode=0777,uid=1000,id=r_build_$TARGETPLATFORM,target=$ROS
 RUN rm -r build ; rm -r install ; rm -r devel 
 RUN mv build.temp build ; mv install.temp install ; mv devel.temp devel 
 #RUN cp -a build.temp build ; cp -a install.temp install ; cp -a devel.temp devel 
+
+#make stuff owned by user (build for some reason does not work as user)
+RUN chown user:user $ROS_WS/build ; chown user:user $ROS_WS/install ; chown user:user $ROS_WS/devel ; chmod -R a+rwx $ROS_WS/build ; chmod -R a+rwx $ROS_WS/install ; chmod -R a+rwx $ROS_WS/devel
+
 
 #RUN rosdep update ; rosdep fix-permissions
 ADD docker/startup-new.sh /startup.sh
