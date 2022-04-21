@@ -115,3 +115,6 @@
 [submodule "ros-workspace/ros-calibration_imu"]
 	path = ros-workspace/ros-calibration_imu
 	url = https://github.com/pcdangio/ros-calibration_imu.git
+[submodule "ros-workspace/src/ros-calibration_imu"]
+	path = ros-workspace/src/ros-calibration_imu
+	url = https://github.com/pcdangio/ros-calibration_imu.git

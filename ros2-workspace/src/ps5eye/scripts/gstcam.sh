@@ -23,7 +23,7 @@ let CROP="$W / 2"
 
 echo $CROP
 
-gst-launch-1.0 --gst-plugin-path=/home/user/src/robot2/ros2-workspace/install/gst_bridge/lib/gst_bridge/ v4l2src extra-controls="c,exposure_auto=0,power_line_frequency=1" ! video/x-raw, height=$H, width=$W, framerate=$F/1 \
-	! videoconvert  ! queue !  tee name=tee \
+GST_DEBUG=:4 gst-launch-1.0 --gst-plugin-path=/home/user/src/robot2/ros2-workspace/install/gst_bridge/lib/gst_bridge/ v4l2src extra-controls="c,exposure_auto=0,power_line_frequency=1" ! video/x-raw, height=$H, width=$W, framerate=$F/1 \
+     !queue 	! videoconvert  ! queue !  tee name=tee \
 	! queue !  videocrop left=$CROP !   rosimagesink ros-name="ps5eye_left" ros-start-time=$START ros-frame-id="ps5eye_left" ros-namespace="ps5eye" ros-topic="left/image_raw" \
 	tee. ! queue ! videocrop right=$CROP ! rosimagesink ros-name="ps5eye_right" ros-frame-id="ps5eye_right" ros-start-time=$START ros-namespace="ps5eye" ros-topic="right/image_raw"
