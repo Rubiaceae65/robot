@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##@ University of Michigan benchmark test for odometry error correction
 ## UMBmark test for AMR
 # Findout more at " https://johnloomis.org/ece445/topics/odometry/borenstein/paper60.pdf "
@@ -19,8 +19,13 @@ jkl=0.0
 errorcollect=[]
 gopy=0.0
 
-t_odom='/hoverboard_velocity_controller/odom'
 t_cmd='/hoverboard_velocity_controller/cmd_vel'
+#/hoverboard_velocity_controller/cmd_vel_out
+t_odom='/hoverboard_velocity_controller/odom'
+
+
+#t_odom='/hoverboard_velocity_controller/odom'
+#t_cmd='/hoverboard_velocity_controller/cmd_vel'
 
 ##@ Our Apporach
 # Asking AMR to go straight for 4 distance (calling gostraight function)

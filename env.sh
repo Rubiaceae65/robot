@@ -1,0 +1,5 @@
+
+export FASTRTPS_DEFAULT_PROFILES_FILE=shm_profile.xml 
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+#export FASTRTPS_DEFAULT_PROFILES_FILE=<path_to_xml_file>
+export RMW_FASTRTPS_USE_QOS_FROM_XML=1
