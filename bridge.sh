@@ -17,9 +17,9 @@ source ${R2}/ros2-workspace/install/setup.bash
 export ROS_MASTER_URI=http://127.0.0.1:11311
 
 
-export FASTRTPS_DEFAULT_PROFILES_FILE=$R2/ros2-workspace/shm_profile.xml 
-export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+#export FASTRTPS_DEFAULT_PROFILES_FILE=$R2/ros2-workspace/shm_profile.xml 
+#export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 #export FASTRTPS_DEFAULT_PROFILES_FILE=<path_to_xml_file>
-export RMW_FASTRTPS_USE_QOS_FROM_XML=1
+#export RMW_FASTRTPS_USE_QOS_FROM_XML=1
 
 ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
