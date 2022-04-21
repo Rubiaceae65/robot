@@ -14,5 +14,5 @@ source $R2/ros-workspace/devel/setup.bash
 source ${R2}/ros2-workspace/install/setup.bash
 # For example:
 # . /opt/ros/dashing/setup.bash
-export ROS_MASTER_URI=http://192.168.2.8:11311
+export ROS_MASTER_URI=http://127.0.0.1:11311
 ros2 run ros1_bridge dynamic_bridge --bridge-all-topics

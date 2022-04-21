@@ -35,7 +35,7 @@ class MpuPublisher(Node):
           ('my_double_array', None)
         ] 
         )
-        self.declare_parameter('frame_id', 'imu_frame')
+        self.declare_parameter('frame_id', 'imu_sensor_link')
 
         self.mpu = MPU9250(
           address_ak=AK8963_ADDRESS, 
