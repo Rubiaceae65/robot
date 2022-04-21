@@ -1,0 +1,4 @@
+[ INFO] [1650559137.915459691]: Update PID Gains: F=0.5, P=0, I=0.001, D=0.01, out_min=12.1212, out_max=-12.1212
+
+
+^ reasonable gains

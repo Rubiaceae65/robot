@@ -63,15 +63,15 @@
         And includes the fixed joint  -->
         <xacro:imu_sensor parent="base_link" xyz="0 0 0.30" rpy="0 0 0">
         </xacro:imu_sensor>
-
-
-  <xacro:include filename="$(find robot_launch)/urdf/kinect2.urdf.xacro" />
-        <!-- The following kinect2_xacro defines the _kinect2_rgb_optical_frame
+<!-- The following kinect2_xacro defines the _kinect2_rgb_optical_frame
         And includes the fixed joint  -->
-        <xacro:kinect2 parent="base_link" prefix="kinect">
+
+	<!-- FIXME
+  <xacro:include filename="$(find robot_launch)/urdf/kinect2.urdf.xacro" />
+                <xacro:kinect2 parent="base_link" prefix="kinect">
       		<origin xyz="0 0 0.54" rpy="1.5708 3.14159 1.5708" />
         </xacro:kinect2>
-
+		-->
   <!-- Robot Footprint -->
   <link name="base_footprint"/>
 
@@ -103,8 +103,12 @@
     </joint>
   </xacro:macro>
 
-  <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
+  <!-- <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
   <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="-1" />
+  -->
+  <xacro:wheel prefix="left_wheel" x_reflect="-1" y_reflect="1" />
+  <xacro:wheel prefix="right_wheel" x_reflect="-1" y_reflect="-1" />
+
 
     <!-- Caster Wheel -->
     <!--

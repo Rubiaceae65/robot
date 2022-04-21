@@ -211,12 +211,13 @@
      		<origin xyz="0 0 0.54" rpy="1.5708 3.14159 1.5708" />
   </xacro:kinect2>-->
 
-
+  <!--
     <xacro:include filename="$(find kinect_v2)/urdf/kinect_v2.urdf.xacro" />
     <xacro:kinect_v2  parent="sensorbar_link">
         <origin xyz="0 0 0.8"
                 rpy="0 0 0" />
-    </xacro:kinect_v2>
+	  </xacro:kinect_v2>
+  -->
  <!--
    
   <xacro:include filename="$(find robot_launch)/urdf/sensors/kinect2.urdf.xacro" />
@@ -267,7 +268,7 @@
 
     </link>
 
-    <joint name="${prefix}_joint" type="continuous">
+    <joint name="${prefix}" type="continuous">
       <parent link="base_link"/>
       <child link="${prefix}_link"/>
       <origin xyz="${x_reflect*wheel_xoff} ${y_reflect*(base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>

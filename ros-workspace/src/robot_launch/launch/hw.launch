@@ -1,5 +1,8 @@
 <launch>
 
+  <param name="port" type="str" value="/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 "/>
+
+
   <arg name="joy_dev" default="/dev/input/js0" />
   <arg name="config_filepath" default="$(find robot_launch)/config/joystick.config.yaml" />
   <arg name="joy_topic" default="joy_vel" />

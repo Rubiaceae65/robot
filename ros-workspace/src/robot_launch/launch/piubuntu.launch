@@ -1,15 +1,29 @@
 <launch>
 
-  <arg name="model" default="/home/user/src/robot2/scripts/test.urdf.xacro"/>
+<!--  <arg name="model" default="/home/user/src/robot2/scripts/test.urdf.xacro"/> -->
+
+  <arg name="model" default="/home/user/src/robot2/ros-workspace/src/robot_launch/urdf/test.urdf.xacro"/>
+
+
+
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
+    <include file="$(find robot_launch)/launch/joy.launch" > 
+    </include>
 
-
+<!-- FIXME imu is broken after killing and restarting
     <include file="$(find robot_launch)/launch/mpu9250.launch" > 
     </include>
+
+
+    <include file="$(find robot_launch)/launch/hoverboard.launch" > 
+    </include>
+
+-->
+<group ns="gps1">
 
 <node name="nmea_serial_driver_node" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen">
     <param name="port" value="/dev/serial/by-id/usb-Silicon_Labs_CP2104_USB_to_UART_Bridge_Controller_008927D3-if00-port0"/>
@@ -18,8 +32,22 @@
     <param name="use_GNSS_time" value="False" />
     <param name="time_ref_source" value="False" />
     <param name="useRMC" value="False" />
-  </node>
 
+
+
+  </node>
+</group>
+
+<group ns="gps2">
+<node name="nmea_serial_driver_node" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen">
+    <param name="port" value="/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller_D-if00-port0"/>
+    <param name="baud" value="9600" />
+    <param name="frame_id" value="gps" />
+    <param name="use_GNSS_time" value="False" />
+    <param name="time_ref_source" value="False" />
+    <param name="useRMC" value="False" />
+  </node>
+</group>
 
 
 
