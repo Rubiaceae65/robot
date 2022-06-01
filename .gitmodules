@@ -61,3 +61,12 @@
 [submodule "ros-workspace/src/aws-robomaker-small-warehouse-world"]
 	path = ros-workspace/src/aws-robomaker-small-warehouse-world
 	url = https://github.com/aws-robotics/aws-robomaker-small-warehouse-world.git
+[submodule "ros-workspace/src/kinect_v2_udrf"]
+	path = ros-workspace/src/kinect_v2_udrf
+	url = https://github.com/wangxian4423/kinect_v2_udrf.git
+[submodule "ros-workspace/src/rosduct"]
+	path = ros-workspace/src/rosduct
+	url = git@github.com:Rubiaceae65/rosduct.git
+[submodule "ros-workspace/src/aws-robomaker-small-house-world"]
+	path = ros-workspace/src/aws-robomaker-small-house-world
+	url = https://github.com/aws-robotics/aws-robomaker-small-house-world.git

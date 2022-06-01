@@ -1,6 +1,6 @@
 {
   "name": "ros",
-  "image": "lala432/ros-dev:latest",
+  "image": "lala432/mini-withbase:latest",
   "forwardPorts": [6080],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
@@ -16,15 +16,17 @@
    "-v","/home/user/.Xauthority:/root/.Xauthority:ro",
    "-v","/tmp/.X11-unix/X0:/tmp/.X11-unix/X0:rw",
    "-v", "/run/udev:/run/udev:ro", 
-   "-v","/dev:/dev",
-   "-v","/home/user/.ssh/id_rsa:/home/user/.ssh/id_rsa",
-`  "-v","/home/user/.ssh/id_rsa.pub:/home/user/.ssh/id_rsa.pub"
-  ],
+   "-v","/dev:/dev"
+     ],
 
   "forwardPorts": [3000,5900,5901,5902,9090],
   "appPort": ["11311:11311", , "8000:8000", "9090:9090", "9000:9000", "10000-10100:10000-10100"],
 
   "10000-10100:10000-10100": {
+"-v","/home/user/.ssh/id_rsa:/home/user/.ssh/id_rsa",
+`  "-v","/home/user/.ssh/id_rsa.pub:/home/user/.ssh/id_rsa.pub",
+
+"initializeCommand": "docker pull lala432/mini-withbase:latest",
     "label": "ros auto ports",
     "onAutoForward": "notify",
    "--device", "/dev/dri:/devA/dri",
@@ -37,7 +39,7 @@
   "containerUser": "user",
   "updateRemoteUserUID":false,
   "containerEnv": {
-    "HOME": "/home/user",
+    "HOME": "/workspaces/",
    "SSH_IP": "192.168.2.207",
     "ROS_CONF": "vscode",
     "ROS_IP": "127.0.0.1",
@@ -48,9 +50,16 @@
 },
   "remoteUser": "user",
   "overrideCommand": false,
-"initializeCommand": "docker pull lala432/ros-dev:latest",
 "extensions": [
-	"okteto.remote-kubernetes"
-],
+	"okteto.remote-kubernetes",
+  "ms-azuretools.vscode-docker",
+ "ms-python.python",
+    "ms-vscode.cpptools",
+    "twxs.cmake",
+    "ms-vscode.cmake-tools",
+    "ms-iot.vscode-ros",
+    "smilerobotics.urdf",
+    "yzhang.markdown-all-in-one"
+]
 
 }

@@ -1,3 +1,4 @@
+
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -15,20 +16,28 @@ spec:
       annotations:
         lala: asdf
     spec:
+      #{{ if eq .Values.simulation.enabled false }}
+      nodeSelector:
+        robot: "vision" 
+        #{{ end }}
       volumes:
         - name: scripts
           configMap:
             name: ros-scripts
             defaultMode: 0777
-
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
       tolerations:
         - key: "robot"
           operator: "Exists"
-          #      nodeSelector:
-            # robot: 6500
       containers:
         - name: loc
-          image: 'lala432/ros-dev:latest'
+
+          image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+ 
           command: 
             - /scripts/ros-run.sh
           env:
@@ -38,10 +47,16 @@ spec:
               value: http://robot-ros-master:11311/ 
             - name: LAUNCH
               value: localization
+            {{ if eq .Values.simulation.enabled true }}
+            - name: LAUNCHENV
+              value: simul
+            {{ end }}
           volumeMounts:
             - name: scripts
               mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+
 
   strategy:
     type: Recreate
-

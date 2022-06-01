@@ -1,0 +1,12 @@
+
+<launch>
+
+    <include file="$(find robot_launch)/launch/joy_wingman.launch"/>
+
+    <node required="true" pkg="rosduct" name="rosduct" type="rosduct_main.py" output="screen">
+
+    	<rosparam command="load" file="$(find robot_launch)/config/rosduct_joy.yaml" />
+        <remap from="/remote_vel" to="/wingman_vel"/>
+    </node>
+
+</launch>

@@ -11,10 +11,11 @@ simulation:
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  repository: lala432
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  defaultname: "mini-withbase" 
+  tag: ":latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -78,7 +79,14 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
+nodeSelector:
+  vision: {}
+  motor:       
+    tolerations:
+      - key: "robot"
+        operator: "Exists"
+    nodeSelector:
+      robot: pi
 
 tolerations: []
 

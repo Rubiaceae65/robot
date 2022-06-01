@@ -1,3 +1,4 @@
+{{- if eq .Values.simulation.enabled true -}}
 ---
 apiVersion: v1
 kind: Service
@@ -11,18 +12,18 @@ spec:
       - name: gazebo
         port: 11345
         targetPort: 11345
-      - name: teleop
-        port: 8002
-        targetPort: 8002
+        #- name: teleop
+        #port: 8002
+        #targetPort: 8002
       - name: gzweb
         port: 8001
         targetPort: 8001
-      - name: websockmaybe
-        port: 42021
-        targetPort: 42021
-      - name: websock
-        port: 9090
-        targetPort: 9090
+        #- name: websockmaybe
+        #port: 42021
+        #targetPort: 42021
+        #- name: websock
+        #port: 9090
+        #targetPort: 9090
 
 
 
@@ -33,6 +34,7 @@ spec:
     type: LoadBalancer
 
 ---
+
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -55,15 +57,26 @@ spec:
           configMap:
             name: ros-scripts
             defaultMode: 0777
-
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+      nodeSelector:
+        robot: "vision"
       tolerations:
         - key: "robot"
           operator: "Exists"
-          #      nodeSelector:
-            # robot: 6500
       containers:
         - name: gzserver
-          image: 'lala432/ros-dev:latest'
+          image: "{{ .Values.image.repository }}/gazebo{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          #image: 'lala432/ros-dev:latest'
+          resources:
+            limits:
+              memory: "3Gi"
+            requests:
+              memory: "1Gi"
           command: 
             - /scripts/ros-run.sh
           env:
@@ -76,9 +89,17 @@ spec:
           volumeMounts:
             - name: scripts
               mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+ 
         - name: gzweb
-          image: 'lala432/ros-dev:latest'
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}/gazebo{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+              memory: "4Gi"
+            requests:
+              memory: "2Gi"
           command: 
             - /scripts/ros-run.sh
           env:
@@ -91,7 +112,26 @@ spec:
           volumeMounts:
             - name: scripts
               mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+        - name: gazebo-launch
+          image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }} 
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: gazebo_spawn
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: launch
+              mountPath: /launch
 
   strategy:
     type: Recreate
-
+{{- end }}

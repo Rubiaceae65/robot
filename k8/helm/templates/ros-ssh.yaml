@@ -13,46 +13,13 @@ spec:
       - name: vnc
         port: 5900
         targetPort: 5900
-
-
     selector:
       app: ros-ssh
         #type: ClusterIP
     type: LoadBalancer
 
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: pod-service-access
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: read-services
-rules:
-- apiGroups: [""]
-  resources: ["services"]
-  verbs: ["get", "watch", "list"]
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: read-services
-  #namespace: simul
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: read-services
-subjects:
-- kind: ServiceAccount
-  name: pod-service-access
-  #namespace: sim
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -72,11 +39,24 @@ spec:
       labels:
         app: ros-ssh
     spec:
+{{ if eq .Values.simulation.enabled false }}
+      nodeSelector:
+        robot: "vision" 
+      tolerations:
+        - key: "robot"
+          operator: "Exists" 
+{{ end }}
+
       volumes:
         - name: scripts
           configMap:
             name: ros-scripts
             defaultMode: 0777
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+ 
       serviceAccount: pod-service-access
       containers:
       - image: lala432/ros-dev:latest
@@ -100,4 +80,6 @@ spec:
         volumeMounts:
           - name: scripts
             mountPath: /scripts
+          - name: launch
+            mountPath: /launch
 

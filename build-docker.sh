@@ -14,10 +14,10 @@ MA=0
 
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
-if [ $MA -eq 1 ]
-then
-  kubectl apply -f k8/qemu-user-static.yml
-fi
+#if [ $MA -eq 1 ]
+#then
+#  kubectl apply -f k8/qemu-user-static.yml
+#fi
 
 
 function r () {
@@ -93,11 +93,24 @@ function b () {
 }
 
 #b k8s-host-device-plugin k8/k8s-host-device-plugin/ k8/k8s-host-device-plugin/Dockerfile
-#b ros-base ./ docker/base.Dockerfile
-b ros-dev ./ docker/ros-dev.Dockerfile
 
-r deployment ros-pi k8/ros-pi.yaml
-r deployment ros-6500 k8/ros-6500.yaml
+#b ros-base ./docker docker/base.Dockerfile
+#b fromsrc ./docker docker/fromsrc.Dockerfile
+b ros-alpine ./ docker/alpine.Dockerfile
+
+#b mini-withbase ./ docker/mini-withbase.Dockerfile
+MA=0
+
+
+b gazebo ./docker docker/gazebo.Dockerfile
+
+
+#b mini ./ docker/mini.Dockerfile
+
+#b ros-dev ./ docker/ros-dev.Dockerfile
+
+#r deployment ros-pi k8/ros-pi.yaml
+#r deployment ros-6500 k8/ros-6500.yaml
 
 #b ubuntu-cross ./ docker/ubuntu-cross.Dockerfile
 #r daemonset host-device-plugin-daemonset k8/ib-device-plugin.yaml 

@@ -24,27 +24,33 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: pod-service-access
+  namespace: {{ .Release.Namespace }}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
+  #name: {{ .Release.Namespace }}-{{ .Release.Name }}-read-services
   name: read-services
-rules:
-- apiGroups: [""]
-  resources: ["services"]
-  verbs: ["get", "watch", "list"]
+  namespace: {{ .Release.Namespace }}
 
+rules:
+- resources: ["services"]
+  verbs: ["get", "watch", "list"]
+  apiGroups: [""]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: read-services
-  #namespace: simul
+  #name: {{ .Release.Name }}-read-services
+  name: read-services2
+  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
+  #name: {{ .Release.Namespace }}-{{ .Release.Name }}-read-services
   name: read-services
+
 subjects:
 - kind: ServiceAccount
   name: pod-service-access
@@ -76,10 +82,19 @@ spec:
           configMap:
             name: ros-scripts
             defaultMode: 0777
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+ 
       serviceAccount: pod-service-access
       containers:
-      - image: lala432/ros-dev:latest
-        imagePullPolicy: Always
+      - 
+        #image: lala432/ros-dev:latest
+        #imagePullPolicy: Always
+        image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+ 
         name: pyweb
         command: 
             - /scripts/ros-run.sh
@@ -94,6 +109,9 @@ spec:
         volumeMounts:
           - name: scripts
             mountPath: /scripts
+          - name: launch
+            mountPath: /launch
+ 
       - image: lala432/ros-dev:latest
         imagePullPolicy: Always
         name: capraweb-ui
@@ -126,4 +144,6 @@ spec:
         volumeMounts:
           - name: scripts
             mountPath: /scripts
+          - name: launch
+            mountPath: /launch
 

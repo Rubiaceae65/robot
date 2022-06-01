@@ -4,24 +4,21 @@ kind: Service
 metadata:
     name: roswebsocket
     annotations:
-      metallb.universe.tf/allow-shared-ip: "ros"
-
+        metallb.universe.tf/allow-shared-ip: "ros"
 spec:
     ports:
-      - name: webviz-ws
-        port: 9090
-        targetPort: 9090
-      - name: webviz
-        port: 80
-        targetPort: 8080
-      - name: vnc
-        port: 5900
-        targetPort: 5900
-
-
+        - name: webviz-ws
+          port: 9090
+          targetPort: 9090
+        - name: webviz
+          port: 80
+          targetPort: 8080
+        - name: vnc
+          port: 5900
+          targetPort: 5900
     selector:
-      app: ros-xserver
-        #type: ClusterIP
+        app: ros-xserver
+          #type: ClusterIP
     type: LoadBalancer
 ---
 kind: Deployment
@@ -41,19 +38,28 @@ spec:
       annotations:
         lala: asdf
     spec:
-
-      {{- if eq .Values.simulation.enabled false -}}
+{{ if eq .Values.simulation.enabled false }}
       nodeSelector:
-        robot: "vision"
-      {{- end }}
+        robot: "vision" 
+      tolerations:
+        - key: "robot"
+          operator: "Exists" 
+{{ end }}
+
       tolerations:
         - key: "robot"
           operator: "Exists"
       volumes:
-        - name: scripts
+        - name: scriptsvol
           configMap:
             name: ros-scripts
             defaultMode: 0777
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+
+
 
       containers:
         - name: webviz
@@ -70,8 +76,11 @@ spec:
             - name: LAUNCH
               value: wsbridge
           volumeMounts:
-            - name: scripts
+            - name: scriptsvol
               mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+
 
         - name: robot-xserver
           image: 'lala432/ros-dev:latest'
@@ -97,8 +106,11 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-            - name: scripts
+            - name: scriptsvol
               mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+ 
           imagePullPolicy: Always
           securityContext:
             runAsUser: 0

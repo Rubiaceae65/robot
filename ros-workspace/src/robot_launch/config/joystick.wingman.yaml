@@ -1,0 +1,10 @@
+# ouya
+axis_linear: 1  # Forward/Back
+scale_linear: 8.5
+scale_linear_turbo: 2.5
+
+axis_angular: 0  # Twist
+scale_angular: 3 
+
+enable_button: 0  # Trigger
+enable_turbo_button: 2  # Button 2 aka thumb button

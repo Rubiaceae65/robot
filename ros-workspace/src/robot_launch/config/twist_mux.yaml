@@ -1,22 +1,27 @@
 topics:
+
 - name    : joypad
-  topic   : teleop_twist_joy/cmd_vel
+  topic   : bluetooth_vel
   timeout : 0.1
-  priority: 10
-- name    : keyboard
-  topic   : keyboard_teleop/cmd_vel
+  priority: 100
+- name    : joystick
+  topic   : joystick_vel
   timeout : 0.1
-  priority: 20
-- name    : navigation
-  topic   : cmd_vel
+  priority: 90
+- name    : remote
+  topic   : remote_vel
   timeout : 0.1
-  priority: 5
-- name    : tag_follower
-  topic   : tag_follower/cmd_vel
+  priority: 80
+- name    : web
+  topic   : web_vel
+  timeout : 0.1
+  priority: 70
+- name    : move_base
+  topic   : move_base_vel
   timeout : 0.5
-  priority: 3
-locks:
-- name    : e_stop
-  topic   : e_stop
-  timeout : 0.0
-  priority: 255
+  priority: 10
+#locks:
+#- name    : e_stop
+#  topic   : e_stop
+#  timeout : 0.0
+#  priority: 255

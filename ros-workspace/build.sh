@@ -5,13 +5,21 @@
 
 echo "building for $TARGETPLATFORM "
 
+
+#CMAKE_ARGS='-Dfreenect2_DIR=/srv/freenect2/lib/cmake/freenect2 -DCMAKE_BUILD_TYPE="Release"'
+CMAKE_ARGS='-Dfreenect2_DIR=/srv/freenect2/lib/cmake/freenect2"'
+#CMAKE_ARGS=''
+
+export CMAKE_PREFIX_PATH=/srv/RTIMULib2:/srv/freenect2:$CMAKE_PREFIX_PATH
+
+
 #rm -r build/hoverboard_driver
 # when not initialized
 #if ! ls build/.built_by
 #then
  catkin config
  catkin init
-# catkin clean
+ catkin clean
  #catkin build --force-cmake
 #fi
 
@@ -29,13 +37,21 @@ echo "we are $UID in groups `groups` pwd $PWD"
 #catkin build --force-cmake
 if [[ $TARGETPLATFORM == "linux/amd64" ]]
 then
-    catkin build kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer robot_launch hoverboard_driver teleop_twist_web cartographer_ros gazebo_ros_2Dmap_plugin map2gazebo
+  catkin build --cmake-args="\'${CMAKE_ARGS}\'"  kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer
+#  catkin build kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer robot_launch hoverboard_driver teleop_twist_web 
+
+
+
+  #map2gazebo move_base_flex rtab_dumpster aws_robomaker_small_warehouse_world
+ 
+  #catkin build kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer robot_launch hoverboard_driver teleop_twist_web cartographer_ros map2gazebo move_base_flex rtab_dumpster aws_robomaker_small_warehouse_world
+    #gazebo_ros_2Dmap_plugin 
 fi
 if [[ $TARGETPLATFORM == "linux/arm64" ]]
 then
-  catkin build robot_launch driver_mpu9250 hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros
+  catkin build robot_launch hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros
 fi
-
+#driver_mpu9250 
 cp -r build build.temp
 cp -r devel devel.temp
 cp -r install install.temp

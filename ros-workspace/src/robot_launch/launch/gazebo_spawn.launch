@@ -4,15 +4,23 @@
   <!--
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model test" output="screen"/>
 -->
-<!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
 
-  <node name="urdf_spawner" 
-      pkg="gazebo_ros" 
-      type="spawn_model" 
-      respawn="false" 
-      output="screen"
-      args="-urdf -model test -param robot_description -x 0 -y 0 -z 1.085 -R 0 -P 0 -Y 0"
-      />
+<!-- Spawn robot in Gazebo -->
+	<arg name= "pos_x" default = "5"/>
+	<arg name= "pos_y" default = "5"/>
+	<arg name= "pos_z" default = "0"/>
+	<arg name= "yaw" default = "0"/>
+	<arg name= "robot_name" default= "test"/>
+
+	<node name="urdf_robot_model_spawner" pkg="gazebo_ros" type="spawn_model"
+	args="-param robot_description
+	-urdf
+	-x $(arg pos_x)
+	-y $(arg pos_y)
+	-z $(arg pos_z)
+	-Y $(arg yaw)
+	-model $(arg robot_name)"
+	respawn="false" output="screen"/>
 
   <!-- Launch teleop -->
   <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e" /> -->
