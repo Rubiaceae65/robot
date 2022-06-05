@@ -1,0 +1,68 @@
+{{- if eq .Values.simulation.enabled false -}}
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-motor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-motor
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-motor
+      annotations:
+        lala: asdf
+    spec:
+      nodeSelector:
+        robot: "vision"
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+      volumes:
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+
+
+      containers:
+        - name: motor
+          image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: motor
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+          resources: 
+            limits:
+              smarter-devices/ttyUSB0: 1
+            requests:
+              smarter-devices/ttyUSB0: 1
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1000
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+
+{{- end }}

@@ -1,0 +1,28 @@
+<launch>
+
+  <arg name="launchenv" value="$(optenv LAUNCHENV robot2)" />
+
+        <include file="/launch/rtab_mapping.launch" if="$(eval arg('launchenv') == 'robot2')">
+
+
+
+            <arg name="scan_cloud_topic"   value="/kinect2/sd/points"/> 
+            <arg name="rgb_topic"   value="/kinect2/sd/image_color_rect"/> 
+            <arg name="depth_topic" value="/kinect2/sd/image_depth_rect"/> 
+            <arg name="camera_info_topic" value="/kinect2/sd/camera_info"/>
+
+        </include>
+ 
+        <include file="/launch/rtab_mapping.launch" if="$(eval arg('launchenv') == 'simul')">
+
+
+            <arg name="scan_cloud_topic"   value="/kinect_V2/depth/points"/> 
+            <arg name="rgb_topic"   value="/kinect_V2/rgb/image_raw"/> 
+            <arg name="depth_topic" value="/kinect_V2/depth/image_raw"/> 
+            <arg name="camera_info_topic" value="/kinect_V2/rgb/camera_info"/>
+        </include>
+
+
+
+
+</launch>

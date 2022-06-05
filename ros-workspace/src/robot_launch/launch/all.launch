@@ -1,0 +1,42 @@
+
+<!--
+
+    launch file to launch a simulation locally
+-->
+
+<launch>
+
+<group>
+    <include file="$(find robot_launch)/launch/gzserver.launch" >
+        <arg name="gui" value="true" />
+    </include>
+
+
+</group>
+
+<group ns="robot2" clear_params="true">
+
+    <include file="$(find robot_launch)/launch/gazebo_spawn.launch" >
+	    <arg name= "pos_x" value = "2"/>
+	    <arg name= "pos_y" value = "2"/>
+    	<arg name= "pos_z" value = "0.6"/>
+    	<arg name= "yaw" default = "0"/>
+    </include>
+
+</group>
+
+<group ns="dumpster" clear_params="true">
+
+    <include file="$(find rtab_dumpster)/launch/spawn_rtab_dumpster.launch" >
+	    <arg name= "pos_x" value = "-2"/>
+	    <arg name= "pos_y" value = "-2"/>
+    	<arg name= "pos_z" value = "0.6"/>
+    	<arg name= "yaw" default = "0"/>
+    </include>
+
+
+
+
+</group>
+
+</launch>

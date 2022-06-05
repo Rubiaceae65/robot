@@ -28,6 +28,32 @@
         <depthImageTopicName>/${camera_name}/depth/image_raw</depthImageTopicName>
         <depthImageCameraInfoTopicName>/${camera_name}/depth/camera_info</depthImageCameraInfoTopicName>
         <pointCloudTopicName>/${camera_name}/depth/points</pointCloudTopicName>
+        <!--
+/kinect2/qhd/camera_info
+/kinect2/qhd/image_color_rect
+/kinect2/qhd/image_depth_rect
+
+/kinect2/sd/camera_info
+/kinect2/sd/image_color_rect
+/kinect2/sd/image_color_rect/compressed
+/kinect2/sd/image_depth
+/kinect2/sd/image_depth/compressed
+/kinect2/sd/image_depth_rect
+/kinect2/sd/image_depth_rect/compressed
+/kinect2/sd/image_ir
+/kinect2/sd/image_ir/compressed
+/kinect2/sd/image_ir_rect
+/kinect2/sd/image_ir_rect/compressed
+/kinect2/sd/points
+-->
+<!--
+        <imageTopicName>/${camera_name}/sd/image_ir</imageTopicName>
+        <cameraInfoTopicName>/${camera_name}/ir/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>/${camera_name}/sd/image_depth</depthImageTopicName>
+        <depthImageCameraInfoTopicName>/${camera_name}/depth/camera_info</depthImageCameraInfoTopicName>
+        <pointCloudTopicName>/${camera_name}/depth/points</pointCloudTopicName>
+-->
+
         <frameName>${frame_name}</frameName>
         <pointCloudCutoff>0.5</pointCloudCutoff>
         <distortionK1>0.00000001</distortionK1>

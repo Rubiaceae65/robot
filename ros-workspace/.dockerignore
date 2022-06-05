@@ -1,0 +1,11 @@
+build
+build.bak
+devel
+devel.bak
+core
+logs
+logs.bak
+old
+.catkin_tools
+.catkin_workspace
+

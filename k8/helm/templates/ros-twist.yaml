@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: twist
+    annotations:
+      metallb.universe.tf/allow-shared-ip: "ros"
+
+spec:
+    ports:
+      - name: teleop
+        port: 8002
+        targetPort: 8002
+      - name: websock
+        port: 9090
+        targetPort: 9090
+
+    selector:
+      app: ros-twist
+        #type: ClusterIP
+    type: LoadBalancer
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-twist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-twist
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-twist
+      annotations:
+        lala: asdf
+    spec:
+      volumes:
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+      nodeSelector:
+        robot: "vision"
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+      containers:
+        - name: twist
+          image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }} 
+ 
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: twist
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+
+  strategy:
+    type: Recreate

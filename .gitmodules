@@ -49,3 +49,24 @@
 [submodule "ros-workspace/src/map2gazebo"]
 	path = ros-workspace/src/map2gazebo
 	url = https://github.com/shilohc/map2gazebo.git
+[submodule "ros-workspace/src/rtabmap_ros"]
+	path = ros-workspace/src/rtabmap_ros
+	url = https://github.com/introlab/rtabmap_ros.git
+[submodule "ros-workspace/src/move_base_flex"]
+	path = ros-workspace/src/move_base_flex
+	url = https://github.com/magazino/move_base_flex.git
+[submodule "ros-workspace/src/rtab_dumpster"]
+	path = ros-workspace/src/rtab_dumpster
+	url = https://github.com/rfzeg/rtab_dumpster.git
+[submodule "ros-workspace/src/aws-robomaker-small-warehouse-world"]
+	path = ros-workspace/src/aws-robomaker-small-warehouse-world
+	url = https://github.com/aws-robotics/aws-robomaker-small-warehouse-world.git
+[submodule "ros-workspace/src/kinect_v2_udrf"]
+	path = ros-workspace/src/kinect_v2_udrf
+	url = https://github.com/wangxian4423/kinect_v2_udrf.git
+[submodule "ros-workspace/src/rosduct"]
+	path = ros-workspace/src/rosduct
+	url = git@github.com:Rubiaceae65/rosduct.git
+[submodule "ros-workspace/src/aws-robomaker-small-house-world"]
+	path = ros-workspace/src/aws-robomaker-small-house-world
+	url = https://github.com/aws-robotics/aws-robomaker-small-house-world.git

@@ -8,7 +8,6 @@ project(robot_launch)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  driver_mpu9250
   hoverboard_driver
   teleop_twist_joy
   teleop_twist_keyboard

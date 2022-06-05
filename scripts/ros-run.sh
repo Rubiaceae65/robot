@@ -14,15 +14,26 @@ echo "= ROS_IP: $ROS_IP"
 echo "= ROS_WS: $ROS_WS"
 echo "==========================================="
 
-
+export LIBVA_DRIVER_NAME=i965
 
 function rlaunch () {
   echo "STARTING: $@"
   
-  LD_PRELOAD=/usr/local/lib/bindport.so roslaunch -v --wait $@ 
+  #LD_PRELOAD=/usr/local/lib/bindport.so roslaunch -v --wait $@ 
+  roslaunch -v --wait $@ 
+
   #|& tee /proc/1/fd/1
 
 }
+
+#LFP="robot_launch "
+if ls /launch 
+then
+  LFP="/launch/"
+else
+  LFP="/workspaces/robot2/ros-workspace/src/robot_launch/launch/"
+fi
+
 
 
 case $LAUNCH in
@@ -55,8 +66,20 @@ EOF
   ;;
  
   move_base)
-    rlaunch robot_launch move_base.launch
+    rlaunch "$LFP"move_base.launch
   ;;
+
+  all)
+    roscore & > /dev/null 2>&1
+    rlaunch "$LFP"all.launch
+  ;;
+
+  all2)
+   # roscore & > /dev/null 2>&1
+    rlaunch "$LFP"all2.launch
+  ;;
+
+
 
  
   map)
@@ -77,25 +100,32 @@ EOF
   ;;
 
   vision | kinect)
-    #export LIBVA_DRIVER_NAME=i965
+    export LIBVA_DRIVER_NAME=i965
     # rosrun kinect2_bridge kinect2_bridge _fps_limit:=30 _depth_method:=opencl _reg_method:=cpu _max_depth:=0.2 _min_depth:=0.1 _queue_size:=100 _bilateral_filter:=false _edge_aware_filter:=false _worker_threads:=8
-    rlaunch robot_launch kinect2_bridge.launch _fps_limit:=25 _depth_method:=opencl _reg_method:=opencl publish_tf:=true
+    rlaunch "$LFP"kinect2_bridge.launch 
+    #_fps_limit:=25 _depth_method:=opencl _reg_method:=opencl publish_tf:=true
+    #while true
+    #do
+    #  echo "sleeping..."
+    #  sleep 5
+
+    #done
   ;;
 
   wsbridge)
-    rlaunch robot_launch debug.launch
+    rlaunch "$LFP"debug.launch
   ;;
  
   gps)
-	  rlaunch /scripts/gps.launch
+	  rlaunch "$LFP"gps.launch
   ;;
 
   localization)
-	  rlaunch /scripts/localization.launch
+	  rlaunch "$LFP"localization.launch
   ;;
 
   state_pub)
-	  rlaunch /scripts/state_pub.launch
+	  rlaunch "$LFP"state_pub.launch
   ;;
  
   imu)
@@ -104,23 +134,32 @@ EOF
     #cd /home/user/ros-workspace
     #python3 mputest.py
     i2cdetect -y 1
-    rlaunch /scripts/mpu9250.launch
+    rlaunch "$LFP"mpu9250.launch
   ;;
 
   motor)
-	  rlaunch robot_launch motor.launch
+	  rlaunch "$LFP"motor.launch
+  ;;
+
+  twist)
+	  rlaunch "$LFP"twist.launch
   ;;
 
 
+
   joy)
-	  rlaunch robot_launch joy.launch
+	  rlaunch "$LFP"joy.launch
   ;;
 
   gzserver)
     Xvfb :2 -screen 0 1600x1200x16  &
     export DISPLAY=:2.0
 	  #rlaunch robot_launch gzserver.launch
-    rlaunch /scripts/gzserver.launch
+    rlaunch "$LFP"gzserver.launch
+  ;;
+  
+  gazebo_spawn)
+    rlaunch "$LFP"gazebo_spawn.launch
   ;;
 
   web)
@@ -144,7 +183,7 @@ EOF
 
 
   *)
-    echo "don't know what to start, exiting"
+    echo "don't know what to start (LAUNCH is $LAUNCH), exiting \n usage: LAUNCH=all /scripts/ros-run.sh" 
     exit 123
   ;;
 esac

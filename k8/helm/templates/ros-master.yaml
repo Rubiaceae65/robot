@@ -13,16 +13,37 @@ spec:
       labels:
         app: ros-master
     spec:      
+{{ if eq .Values.simulation.enabled false }}
+      nodeSelector:
+        robot: "vision" 
+      tolerations:
+        - key: "robot"
+          operator: "Exists" 
+{{ end }}
+
+
       volumes:
         - name: scripts
           configMap:
             name: ros-scripts
             defaultMode: 0777
-
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
 
       containers:
         - name: master
-          image: 'lala432/ros-dev:latest'
+          
+          image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+ 
+
+          resources:
+            limits:
+              memory: "4Gi"
+            requests:
+              memory: "2Gi"
           command: 
             - /scripts/ros-run.sh
           env:
@@ -37,10 +58,11 @@ spec:
           volumeMounts:
             - name: scripts
               mountPath: /scripts
- 
+            - name: launch
+              mountPath: /launch
+   
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          imagePullPolicy: Always
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000

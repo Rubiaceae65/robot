@@ -25,6 +25,11 @@ spec:
           configMap:
             name: ros-scripts
             defaultMode: 0777
+        - name: launch
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+
 
       tolerations:
         - key: "robot"
@@ -33,11 +38,12 @@ spec:
         robot: pi
       containers:
         - name: joy
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            privileged: true
-          image: 'lala432/ros-dev:latest'
+          #securityContext:
+          #  runAsUser: 0
+          #  runAsGroup: 0
+          #  privileged: true
+          image: "{{ .Values.image.repository }}/{{ .Values.image.defaultname}}{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: 
             - /scripts/ros-run.sh
           env:
@@ -50,6 +56,8 @@ spec:
           volumeMounts:
             - name: scripts
               mountPath: /scripts
+            - name: launch
+              mountPath: /launch
             - name: input
               mountPath: /dev/input
 

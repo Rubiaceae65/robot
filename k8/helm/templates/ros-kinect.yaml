@@ -1,0 +1,90 @@
+{{- if eq .Values.simulation.enabled false -}}
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ros-kinect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-kinect
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ros-kinect
+      annotations:
+        lala: asdf
+    spec:
+      nodeSelector:
+        robot: "vision"
+      tolerations:
+        - key: "robot"
+          operator: "Exists"
+      volumes:
+        - name: usbbus
+          hostPath:
+            path: /dev/bus/usb
+            type: Directory
+        - name: input
+          hostPath:
+            path: /dev/input/
+            type: Directory
+        - name: scripts
+          configMap:
+            name: ros-scripts
+            defaultMode: 0777
+        - name: launch
+          configMap:
+            name: launchfiles
+            defaultMode: 0777
+
+
+      containers:
+        - name: vision
+          #image: 'lala432/ros-dev:latest'
+          image: "{{ .Values.image.repository }}/mini-withbase{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            #fsGroup: 0
+            privileged: true
+ 
+          command: 
+            - /scripts/ros-run.sh
+          env:
+            - name: ROS_WS
+              value: /home/user/ros-workspace
+            - name: ROS_MASTER_URI
+              value: http://robot-ros-master:11311/ 
+            - name: LAUNCH
+              value: vision
+            - name: LIBVA_DRIVER_NAME
+              value: i965
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: launch
+              mountPath: /launch
+            - mountPath: /dev/bus/usb
+              name: usbbus
+          resources:
+            limits:
+              gpu.intel.com/i915: 1
+            requests:
+              gpu.intel.com/i915: 1
+
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1000
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+
+{{- end }}

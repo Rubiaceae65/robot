@@ -1,3 +1,48 @@
+
+
+{{- define "myNamedTemplate" }}
+    - name: {{ .Values.myParam1 }}
+      value: {{ .Values.myValue1 | quote }}
+    - name: {{ .Values.myParam2 }}
+      value: {{ .Values.myValue2 | quote }}
+{{- end }}
+
+{{- $myValues := dict "myParam1" "myValue1" "myParam2" "myValue2" -}}
+{{- $myParameters := dict "Values" $myValues -}}
+{{- include "myNamedTemplate" $myParameters }}
+
+
+{{/*
+Env section
+*/}}
+{{- define "robot.container" -}}
+- name: gzweb
+  image: 'lala432/ros-dev:latest'
+  imagePullPolicy: Always
+  resources:
+    limits:
+      memory: "4Gi"
+    requests:
+      memory: "2Gi"
+  command: 
+    - /scripts/ros-run.sh
+  env:
+    - name: ROS_WS
+      value: /home/user/ros-workspace
+    - name: ROS_MASTER_URI
+      value: http://robot-ros-master:11311/ 
+    - name: LAUNCH
+      value: gzweb
+  volumeMounts:
+    - name: scripts
+      mountPath: /scripts
+    - name: launch
+      mountPath: /launch
+
+{{- end }}
+
+
+
 {{/*
 Expand the name of the chart.
 */}}

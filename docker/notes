@@ -1,0 +1,68 @@
+CMake Warning at /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/CMakeLists.txt:60 (message):
+  Your libOpenCL.so is incompatible with CL/cl.h.  Install ocl-icd-opencl-dev
+  
+to update libOpenCL.so?
+
+
+
+------------------------------------------------------------------
+Workspace configuration appears valid.
+---------------------------------------------------------------------
+[build] Found '41' packages in 0.0 seconds.                                                                                                                                                                                                                                  
+[build] Package table is up to date.                                                                                                                                                                                                                                         
+Starting  >>> kinect2_registration                                                                                                                                                                                                                                           
+_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+Warnings   << kinect2_registration:cmake /workspaces/robot2/ros-workspace/logs/kinect2_registration/build.cmake.001.log                                                                                                                                                      
+CMake Warning at /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/CMakeLists.txt:60 (message):
+  Your libOpenCL.so is incompatible with CL/cl.h.  Install ocl-icd-opencl-dev
+  to update libOpenCL.so?
+
+
+cd /workspaces/robot2/ros-workspace/build/kinect2_registration; catkin build --get-env kinect2_registration | catkin env -si  /usr/bin/cmake /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration --no-warn-unused-cli -DCATKIN_DEVEL_PREFIX=/workspaces/robot2/ros-workspace/devel/.private/kinect2_registration -DCMAKE_INSTALL_PREFIX=/workspaces/robot2/ros-workspace/install; cd -
+
+.............................................................................................................................................................................................................................................................................
+_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+Warnings   << kinect2_registration:make /workspaces/robot2/ros-workspace/logs/kinect2_registration/build.make.000.log                                                                                                                                                        
+In file included from /usr/include/CL/cl.h:32,
+                 from /usr/include/CL/opencl.h:38,
+                 from /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:170,
+                 from /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/src/depth_registration_opencl.cpp:33:
+/usr/include/CL/cl_version.h:34:104: note: #pragma message: cl_version.h: CL_TARGET_OPENCL_VERSION is not defined. Defaulting to 220 (OpenCL 2.2)
+   34 | #pragma message("cl_version.h: CL_TARGET_OPENCL_VERSION is not defined. Defaulting to 220 (OpenCL 2.2)")
+      |                                                                                                        ^
+In file included from /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/src/depth_registration_opencl.cpp:33:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp: In constructor ‘cl::Image1D::Image1D(const cl::Context&, cl_mem_flags, cl::ImageFormat, size_t, void*, cl_int*)’:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:3654:9: warning: missing braces around initializer for ‘_cl_image_desc::<unnamed union>’ [-Wmissing-braces]
+ 3654 |         };
+      |         ^
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp: In constructor ‘cl::Image1DBuffer::Image1DBuffer(const cl::Context&, cl_mem_flags, cl::ImageFormat, size_t, const cl::Buffer&, cl_int*)’:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:3740:9: warning: missing braces around initializer for ‘_cl_image_desc::<unnamed union>’ [-Wmissing-braces]
+ 3740 |         };
+      |         ^
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp: In constructor ‘cl::Image1DArray::Image1DArray(const cl::Context&, cl_mem_flags, cl::ImageFormat, size_t, size_t, size_t, void*, cl_int*)’:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:3821:9: warning: missing braces around initializer for ‘_cl_image_desc::<unnamed union>’ [-Wmissing-braces]
+ 3821 |         };
+      |         ^
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp: In constructor ‘cl::Image2D::Image2D(const cl::Context&, cl_mem_flags, cl::ImageFormat, size_t, size_t, size_t, void*, cl_int*)’:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:3928:13: warning: missing braces around initializer for ‘_cl_image_desc::<unnamed union>’ [-Wmissing-braces]
+ 3928 |             };
+      |             ^
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp: In constructor ‘cl::Image2DArray::Image2DArray(const cl::Context&, cl_mem_flags, cl::ImageFormat, size_t, size_t, size_t, size_t, size_t, void*, cl_int*)’:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:4131:9: warning: missing braces around initializer for ‘_cl_image_desc::<unnamed union>’ [-Wmissing-braces]
+ 4131 |         };
+      |         ^
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp: In constructor ‘cl::Image3D::Image3D(const cl::Context&, cl_mem_flags, cl::ImageFormat, size_t, size_t, size_t, size_t, size_t, void*, cl_int*)’:
+/workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_registration/include/internal/CL/cl.hpp:4241:13: warning: missing braces around initializer for ‘_cl_image_desc::<unnamed union>’ [-Wmissing-braces]
+ 4241 |             };
+      |             ^
+cd /workspaces/robot2/ros-workspace/build/kinect2_registration; catkin build --get-env kinect2_registration | catkin env -si  /usr/bin/make --jobserver-auth=3,4; cd -
+
+
+_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+Warnings   << kinect2_viewer:cmake /workspaces/robot2/ros-workspace/logs/kinect2_viewer/build.cmake.000.log                                                                                                                                                                  
+** WARNING ** io features related to pcap will be disabled
+** WARNING ** io features related to png will be disabled
+** WARNING ** io features related to libusb-1.0 will be disabled
+cd /workspaces/robot2/ros-workspace/build/kinect2_viewer; catkin build --get-env kinect2_viewer | catkin env -si  /usr/bin/cmake /workspaces/robot2/ros-workspace/src/iai_kinect2/kinect2_viewer --no-warn-unused-cli -DCATKIN_DEVEL_PREFIX=/workspaces/robot2/ros-workspace/devel/.private/kinect2_viewer -DCMAKE_INSTALL_PREFIX=/workspaces/robot2/ros-workspace/install; cd -
+
+LIBVA_DRIVER_NAME=i965 rosrun kinect2_bridge kinect2_bridge _fps_limit:=4

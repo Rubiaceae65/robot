@@ -7,7 +7,24 @@ ros-workspace/moveit/
 ros-workspace/build.catkin/
 ros-workspace/build.colcon/
 */__pycache__
-
-
+*.swo
+core
 # Ignore DevSpace cache and log folder
 .devspace/
+ros-workspace/src/abseil-cpp/
+ros-workspace/src/cartographer/
+ros-workspace/src/common_sensors/
+ros-workspace/src/robaka-ros/
+ros-workspace/src/rtabmap_ros_isinapt/
+ros-workspace/logs
+ros-workspace/src/abseil-cpp/
+ros-workspace/src/cartographer/
+ros-workspace/src/common_sensors/
+ros-workspace/src/robaka-ros/
+ros-workspace/src/rtabmap_ros_isinapt/
+ros-workspace/src/abseil-cpp/
+ros-workspace/src/cartographer/
+ros-workspace/src/common_sensors/
+ros-workspace/src/robaka-ros/
+ros-workspace/src/rtabmap_ros_isinapt/
+
