@@ -3,8 +3,6 @@
 #ROS_MASTER_URI
 . /opt/ros/noetic/setup.bash
 
-echo "building for $TARGETPLATFORM "
-
 #rm -r build/hoverboard_driver
 # when not initialized
 #if ! ls build/.built_by
@@ -16,13 +14,28 @@ echo "building for $TARGETPLATFORM "
 #fi
 
 set -eux
-#rosdep install --from-paths src --ignore-src -r -y
-du -lh /ccache > /home/user/ccache-before.txt
-ls -lhtr ../
-ls -lhtr
-ls -lhtr  *
+if [ -z ${TARGETPLATFORM+x} ]; 
+ then 
+	 echo "var is unset"; 
+	 TARGETPLATFORM='linux/arm64'
+ else 
 
-echo "we are $UID in groups `groups` pwd $PWD"
+	 INDOCKER=1
+	 echo "in docker, var is set to '$var'"; 
+	#rosdep install --from-paths src --ignore-src -r -y
+	du -lh /ccache > /home/user/ccache-before.txt
+	ls -lhtr ../
+	ls -lhtr
+	ls -lhtr  *
+
+	echo "we are $UID in groups `groups` pwd $PWD"
+
+
+fi
+
+echo "building for $TARGETPLATFORM "
+
+
 
 
 #cd src
@@ -33,14 +46,16 @@ then
 fi
 if [[ $TARGETPLATFORM == "linux/arm64" ]]
 then
-  catkin build robot_launch driver_mpu9250 hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros
+  catkin build -j 1 robot_launch driver_mpu9250 hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros
 fi
 
-cp -r build build.temp
-cp -r devel devel.temp
-cp -r install install.temp
-du -lh /ccache > /home/user/ccache-after.txt
-
+if $INDOCKER
+then	
+	cp -r build build.temp
+	cp -r devel devel.temp
+	cp -r install install.temp
+	du -lh /ccache > /home/user/ccache-after.txt
+fi
 
 
 #catkin_make

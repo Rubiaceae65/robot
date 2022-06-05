@@ -3,6 +3,9 @@
 #ROS_MASTER_URI
 . /opt/ros/noetic/setup.bash
 
+sudo rosdep init
+rosdep update
+
 catkin config
 catkin clean -b --yes --all-profiles --deinit
 catkin init
