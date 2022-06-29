@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+       
+	<!--  https://github.com/dheera/ros-pwm-pca9685   -->
+	<!-- this does NOT work, see scripts/servonode.py -->
+
+  <node name="pwm_driver" pkg="pwm_pca9685" type="pca9685_node">
+	<param name="device" value="/dev/i2c-1" />
+	<param name="address" value="0x40" />
+	<param name="frequency" value="50" />
+
+	<!--
+	<param name="timeout" value="5000" />
+	<param name="pwm_min" value="" />
+	<param name="pwm_max" value="" />
+	-->
+  </node>
+
+
+</launch>
+

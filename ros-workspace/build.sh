@@ -60,7 +60,7 @@ then
 fi
 if [[ $TARGETPLATFORM == "linux/arm64" ]]
 then
-  catkin build -j 1 robot_launch hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros
+  catkin build -j 1 robot_launch hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros pwm_pca9685
 fi
 
 if $INDOCKER
