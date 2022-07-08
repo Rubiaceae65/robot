@@ -67,6 +67,10 @@
   <exec_depend>twist_mux</exec_depend>
   <exec_depend>rosbridge_server</exec_depend>
   <exec_depend>nmea-navsat-driver</exec_depend>
+  <exec_depend>remote_rosbag_record</exec_depend>
+  <exec_depend>joy_listener</exec_depend>
+ 
+
 
 
 

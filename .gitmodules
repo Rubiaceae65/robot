@@ -73,3 +73,9 @@
 [submodule "ros-workspace/src/ros-pwm-pca9685"]
 	path = ros-workspace/src/ros-pwm-pca9685
 	url = https://github.com/dheera/ros-pwm-pca9685.git
+[submodule "firmware/PS5-Camera-Firmware-Loader"]
+	path = firmware/PS5-Camera-Firmware-Loader
+	url = https://github.com/raleighlittles/PS5-Camera-Firmware-Loader.git
+[submodule "ros-workspace/src/ps5eye"]
+	path = ros-workspace/src/ps5eye
+	url = git@github.com:Rubiaceae65/ps5eye.git
