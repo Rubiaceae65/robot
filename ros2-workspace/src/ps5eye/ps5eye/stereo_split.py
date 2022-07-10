@@ -17,7 +17,8 @@ from rclpy.time import Time
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, QoSReliabilityPolicy, qos_profile_sensor_data
 from sensor_msgs.msg import CompressedImage, CameraInfo
 
-import camera_info_manager
+#import camera_info_manager
+from camera_info_manager import CameraInfoManager
 
 class ImagePublisher(Node):
   """
@@ -54,6 +55,9 @@ class ImagePublisher(Node):
     """
     # Initiate the Node class's constructor and give it a name
     super().__init__('image_publisher')
+
+    self._camera_info_manager = CameraInfoManager(self, 'cozmo_camera', namespace='/cozmo_camera')
+
       
     self.publeft = self.create_publisher(Image, '/ps5eye/left/image_raw', 10)
     self.pubright = self.create_publisher(Image, '/ps5eye/right/image_raw', 10)
@@ -82,6 +86,27 @@ class ImagePublisher(Node):
     """
     Publish left and right images
     """
+
+
+            # convert image to gray scale as it is gray although
+            #img = camera_image.raw_image.convert('L')
+            img = camera_image.raw_image
+            ros_img = Image()
+            ros_img.encoding = 'rgb8'
+            ros_img.width = img.size[0]
+            ros_img.height = img.size[1]
+            ros_img.step = ros_img.width * 3
+            ros_img.data = img.tobytes()
+            ros_img.header.frame_id = 'cozmo_camera'
+            cozmo_time = camera_image.image_recv_time
+            #ros_img.header.stamp = rospy.Time.from_sec(cozmo_time)
+            ros_img.header.stamp = TimeStamp.from_sec(cozmo_time)
+            # publish images and camera info
+            self._image_pub.publish(ros_img)
+            camera_info = self._camera_info_manager.getCameraInfo()
+            camera_info.header = ros_img.header
+            self._camera_info_pub.publish(camera_info)
+
     stamp = self.get_clock().now().to_msg()
      
     print(leftframe)
