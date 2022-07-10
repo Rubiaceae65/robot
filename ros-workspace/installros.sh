@@ -12,3 +12,6 @@ apt-get update \
 ros-noetic-amcl ros-noetic-code-coverage  vim screen htop \
   python3-pigpio python3-colcon-ros wget unzip ros-noetic-teleop-twist-joy ros-noetic-teleop-twist-keyboard minicom python3-qwt3d-qt5 libqwtplot3d-qt5-0 python3-pyqtgraph
 
+
+sudo apt install python3-catkin-tools python3-osrf-pycommon
+

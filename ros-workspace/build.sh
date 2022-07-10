@@ -22,8 +22,14 @@ export CMAKE_PREFIX_PATH=/srv/RTIMULib2:/srv/freenect2:$CMAKE_PREFIX_PATH
 set -eux
 if [ -z ${TARGETPLATFORM+x} ]; 
  then 
+	 INDOCKER=0
 	 echo "var is unset"; 
-	 TARGETPLATFORM='linux/arm64'
+	 if [[ `uname -i` == "x86_64" ]]
+	 then
+	   TARGETPLATFORM='linux/amd64'
+   else
+	   TARGETPLATFORM='linux/arm64'
+	 fi
  else 
 
 	 INDOCKER=1
@@ -48,7 +54,9 @@ echo "building for $TARGETPLATFORM "
 #catkin build --force-cmake
 if [[ $TARGETPLATFORM == "linux/amd64" ]]
 then
-  catkin build --cmake-args="\'${CMAKE_ARGS}\'"  kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer
+  catkin build --cmake-args="\'${CMAKE_ARGS}\'"  ps5eye gscam -DGSTREAMER_VERSION_1_x=On
+
+  #catkin build --cmake-args="\'${CMAKE_ARGS}\'"  kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer
 #  catkin build kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer robot_launch hoverboard_driver teleop_twist_web 
 
 
@@ -63,7 +71,7 @@ then
   catkin build -j 1 robot_launch hoverboard_driver i2c_imu sensor_msgs_ext rtimulib_ros pwm_pca9685
 fi
 
-if $INDOCKER
+if [[ $INDOCKER == 1 ]]
 then	
 	cp -r build build.temp
 	cp -r devel devel.temp
@@ -71,11 +79,6 @@ then
 	du -lh /ccache > /home/user/ccache-after.txt
 fi
 #driver_mpu9250 
-cp -r build build.temp
-cp -r devel devel.temp
-cp -r install install.temp
-du -lh /ccache > /home/user/ccache-after.txt
-
 
 
 #catkin_make

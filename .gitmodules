@@ -79,3 +79,15 @@
 [submodule "ros-workspace/src/ps5eye"]
 	path = ros-workspace/src/ps5eye
 	url = git@github.com:Rubiaceae65/ps5eye.git
+[submodule "ros-workspace/src/gscam"]
+	path = ros-workspace/src/gscam
+	url = https://github.com/ros-drivers/gscam.git
+[submodule "ros-workspace/src/camera_umd"]
+	path = ros-workspace/src/camera_umd
+	url = https://github.com/ros-drivers/camera_umd.git
+[submodule "ros2-workspace/src/ros-gst-bridge"]
+	path = ros2-workspace/src/ros-gst-bridge
+	url = https://github.com/BrettRD/ros-gst-bridge.git
+[submodule "ros2-workspace/src/camera_info_manager_py"]
+	path = ros2-workspace/src/camera_info_manager_py
+	url = https://github.com/ros-perception/camera_info_manager_py.git
