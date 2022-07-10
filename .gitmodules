@@ -91,3 +91,6 @@
 [submodule "ros2-workspace/src/camera_info_manager_py"]
 	path = ros2-workspace/src/camera_info_manager_py
 	url = https://github.com/ros-perception/camera_info_manager_py.git
+[submodule "ros2-workspace/src/ros2_kinect2"]
+	path = ros2-workspace/src/ros2_kinect2
+	url = https://github.com/threeal/ros2_kinect2.git

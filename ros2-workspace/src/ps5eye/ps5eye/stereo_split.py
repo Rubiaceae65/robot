@@ -16,7 +16,7 @@ import cv2 # OpenCV library
 from rclpy.time import Time
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, QoSReliabilityPolicy, qos_profile_sensor_data
 from sensor_msgs.msg import CompressedImage, CameraInfo
-
+import os
 #import camera_info_manager
 from camera_info_manager import CameraInfoManager
 
@@ -56,7 +56,18 @@ class ImagePublisher(Node):
     # Initiate the Node class's constructor and give it a name
     super().__init__('image_publisher')
 
-    self._camera_info_manager = CameraInfoManager(self, 'cozmo_camera', namespace='/cozmo_camera')
+    camera_info_url_left = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/../config1/ps5eye_left.yaml'
+    camera_info_url_right = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/../config1/ps5eye_right.yaml'
+
+
+    self._camera_info_manager_left = CameraInfoManager(self, 'ps5eye_left', namespace='/ps5eye/left')
+    self._camera_info_manager_left.setURL(camera_info_url_left)
+    self._camera_info_manager_left.loadCameraInfo()
+
+    self._camera_info_manager_right = CameraInfoManager(self, 'ps5eye_right', namespace='/ps5eye/right')
+    self._camera_info_manager_right.setURL(camera_info_url_right)
+    self._camera_info_manager_right.loadCameraInfo()
+
 
       
     self.publeft = self.create_publisher(Image, '/ps5eye/left/image_raw', 10)
@@ -82,43 +93,38 @@ class ImagePublisher(Node):
 	    history=HistoryPolicy.KEEP_LAST,
 	)
     )   
-  def stereo_publish(self, leftframe, rightframe):
+  def stereo_publish(self,timestamp ,leftframe, rightframe):
     """
     Publish left and right images
     """
 
 
-            # convert image to gray scale as it is gray although
-            #img = camera_image.raw_image.convert('L')
-            img = camera_image.raw_image
-            ros_img = Image()
-            ros_img.encoding = 'rgb8'
-            ros_img.width = img.size[0]
-            ros_img.height = img.size[1]
-            ros_img.step = ros_img.width * 3
-            ros_img.data = img.tobytes()
-            ros_img.header.frame_id = 'cozmo_camera'
-            cozmo_time = camera_image.image_recv_time
-            #ros_img.header.stamp = rospy.Time.from_sec(cozmo_time)
-            ros_img.header.stamp = TimeStamp.from_sec(cozmo_time)
-            # publish images and camera info
-            self._image_pub.publish(ros_img)
-            camera_info = self._camera_info_manager.getCameraInfo()
-            camera_info.header = ros_img.header
-            self._camera_info_pub.publish(camera_info)
+    #ros_img = Image()
+    #ros_img.encoding = 'rgb8'
+    #ros_img.width = img.size[0]
+    #ros_img.height = img.size[1]
+    #ros_img.step = ros_img.width * 3
+    #ros_img.data = img.tobytes()
 
-    stamp = self.get_clock().now().to_msg()
-     
-    print(leftframe)
-         
-    self.camerainfo(self.infopubleft)
+    leftframe.header.frame_id = 'ps5eye_left'
+    rightframe.header.frame_id = 'ps5eye_right'
+    leftframe.header.stamp = timestamp
+    rightframe.header.stamp = timestamp
+ 
+
+
+    left_camera_info = self._camera_info_manager_left.getCameraInfo()
+    left_camera_info.header = leftframe.header
+    self.infopubleft.publish(left_camera_info)
+
+    right_camera_info = self._camera_info_manager_right.getCameraInfo()
+    right_camera_info.header = rightframe.header
+    self.infopubright.publish(right_camera_info)
+
     self.publeft.publish(leftframe)
 
-    self.camerainfo(self.infopubright)
     self.pubright.publish(rightframe)
     
-    # Display the message on the console
-    #self.get_logger().info('Publishing video frame')
  
 class ImageSubscriber(Node):
   """
@@ -153,6 +159,7 @@ class ImageSubscriber(Node):
     #self.get_logger().info('Receiving video frame')
  
     # Convert ROS Image message to OpenCV image
+    timestamp = data.header.stamp
     current_frame = self.br.imgmsg_to_cv2(data, desired_encoding='bgr8')
     crop_left = current_frame[0:0+1080, 1920:1920+1920]
     crop_right = current_frame[0:0+1080, 0:0+1920]
@@ -160,7 +167,7 @@ class ImageSubscriber(Node):
     outright = self.br.cv2_to_imgmsg(crop_right, encoding='bgr8')
 
     #self.image_publisher.stereo_publish(outframe, outframe) 
-    self.image_publisher.stereo_publish(outleft, outright) 
+    self.image_publisher.stereo_publish(timestamp, outleft, outright) 
  
 
 def main(args=None):

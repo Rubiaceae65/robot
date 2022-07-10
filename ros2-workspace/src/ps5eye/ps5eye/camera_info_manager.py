@@ -469,6 +469,7 @@ def loadCalibrationFile(filename, cname):
             ci.height = calib['image_height']
             ci.distortion_model = calib['distortion_model']
             #ci.D = calib['distortion_coefficients']['data']
+     
             ci.d = calib['distortion_coefficients']['data']
             #ci.K = calib['camera_matrix']['data']
             ci.k = calib['camera_matrix']['data']
