@@ -1,0 +1,28 @@
+image_width: 1920
+image_height: 1080
+camera_name: ps5eye_left 
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [1267.532347, 0.000000, 994.104040, 0.000000, 1266.635099, 525.206052, 0.000000, 0.000000, 1.000000]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.004622, -0.001773, -0.003615, 0.004833, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [1263.804443, 0.000000, 1005.445072, 0.000000, 0.000000, 1270.148193, 520.416062, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]
+  #binning_x: 1
+  #binning_y: 1
+  #roi: 
+  #x_offset: 0
+  #y_offset: 0
+  #height: 0
+  #width: 0
+  #do_rectify: True

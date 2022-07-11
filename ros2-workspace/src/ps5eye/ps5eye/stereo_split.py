@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Basic ROS 2 program to publish real-time streaming 
 # video from your built-in webcam
 # Author:
@@ -56,8 +57,8 @@ class ImagePublisher(Node):
     # Initiate the Node class's constructor and give it a name
     super().__init__('image_publisher')
 
-    camera_info_url_left = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/../config1/ps5eye_left.yaml'
-    camera_info_url_right = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/../config1/ps5eye_right.yaml'
+    camera_info_url_left = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/../config/ps5eye_left.yaml'
+    camera_info_url_right = 'file://' + os.path.dirname(os.path.abspath(__file__)) + '/../config/ps5eye_right.yaml'
 
 
     self._camera_info_manager_left = CameraInfoManager(self, 'ps5eye_left', namespace='/ps5eye/left')
