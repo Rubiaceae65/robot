@@ -94,3 +94,15 @@
 [submodule "ros2-workspace/src/ros2_kinect2"]
 	path = ros2-workspace/src/ros2_kinect2
 	url = https://github.com/threeal/ros2_kinect2.git
+[submodule "ros2-workspace/src/cv_camera"]
+	path = ros2-workspace/src/cv_camera
+	url = https://github.com/Kapernikov/cv_camera.git
+[submodule "ros2-workspace/src/opencv_cam"]
+	path = ros2-workspace/src/opencv_cam
+	url = https://github.com/clydemcqueen/opencv_cam.git
+[submodule "ros2-workspace/src/ros2_shared"]
+	path = ros2-workspace/src/ros2_shared
+	url = https://github.com/ptrmu/ros2_shared.git
+[submodule "ros2-workspace/src/ros2_v4l2_camera"]
+	path = ros2-workspace/src/ros2_v4l2_camera
+	url = https://gitlab.com/boldhearts/ros2_v4l2_camera.git

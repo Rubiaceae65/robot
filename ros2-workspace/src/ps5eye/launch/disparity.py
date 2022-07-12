@@ -123,6 +123,11 @@ def generate_launch_description():
                 node_plugin='stereo_image_proc::DisparityNode',
                 namespace='ps5eye',
                 node_name='disparity',
+		parameters=[
+		 {"approximate_sync": True},
+	  	]
+
+
             ),
             ComposableNode(
                 package='stereo_image_proc',
