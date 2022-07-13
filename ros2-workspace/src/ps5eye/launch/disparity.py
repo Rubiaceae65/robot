@@ -81,13 +81,25 @@
 
 
 '''
+import os
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros import actions
 
 from launch_ros.descriptions import ComposableNode
-
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 ns='test'
 def generate_launch_description():
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+
+#    urdf_file_name = 'stereo_camera.urdf.xacro'
+#    urdf = os.path.join( get_package_share_directory('ps5eye'), urdf_file_name)
+    urdf = "/home/user/src/robot2/ros2-workspace/src/ps5eye/urdf/test.urdf"
+    with open(urdf, 'r') as infp:
+        robot_desc = infp.read()
+
 
     image_processing = actions.ComposableNodeContainer(
         name="image_proc_container",
@@ -134,6 +146,14 @@ def generate_launch_description():
                 node_plugin='stereo_image_proc::PointCloudNode',
                 namespace='ps5eye',
                 node_name='pointcloud',
+                remappings=[
+                    ('left/image_rect_color', 'left/image_rect'),
+                ],
+ 		parameters=[
+		 {"approximate_sync": True},
+	  	]
+
+
             ),
  
 
@@ -141,21 +161,26 @@ def generate_launch_description():
             ])
 
     ld = LaunchDescription([
-	actions.Node(
-	  package='stereo_image_proc',
-	  executable='disparity_node',
-	  name='ps5eye_disparity_stuff',
-	  namespace='ps5eye',
-          #remappings=[
-	  #  ('image_raw', 'ps5eye_image'),
-	  #  ('camera_info', 'ps5eye_camera_info'),
-	  #]
-
-	)
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation (Gazebo) clock if true'),
+        actions.Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
+            arguments=[urdf]), 
+        #actions.Node(
+        #    package = "tf2_ros", 
+        #    executable = "static_transform_publisher",
+        #    arguments = ["0", "0", "0", "0", "0", "0", "odom", "laser"]
+        #  )
         ]
 
     )
-    ld = LaunchDescription()
+    #ld = LaunchDescription()
     ld.add_action(image_processing)
 
 

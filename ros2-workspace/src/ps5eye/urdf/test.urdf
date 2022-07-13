@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot name="camera_test">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="2"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 .8 1"/>
+      </material>
+    </visual>
+  </link>
+
+ 
+   <link name="ps5eye_left">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+   </link>
+
+   <link name="ps5eye_right">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0.1 0 0"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+   </link>
+
+ <joint name="base_to_left" type="fixed">
+    <parent link="base_link"/>
+    <child link="ps5eye_left"/>
+    <origin xyz="0.01 0 0"/>
+  </joint>
+
+ <joint name="base_to_right" type="fixed">
+    <parent link="base_link"/>
+    <child link="ps5eye_right"/>
+    <origin xyz="0.01 0 0"/>
+  </joint>
+
+</robot>

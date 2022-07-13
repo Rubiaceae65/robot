@@ -1,4 +1,7 @@
 from setuptools import setup
+import os
+from glob import glob
+from setuptools import find_packages
 
 package_name = 'ps5eye'
 
@@ -10,6 +13,10 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        # Include all launch files
+        (os.path.join('share', package_name), glob('launch/*.py')),
+        # Include model and simulation files
+        (os.path.join('share', package_name), glob('urdf/*.xacro'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
