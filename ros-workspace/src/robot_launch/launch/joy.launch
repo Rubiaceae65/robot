@@ -28,19 +28,20 @@
  -->
 
 <!-- recorder remote -->
+<!--
 <group ns="recorder">
-  <node name="console-record" pkg="remote_rosbag_record" type="record" respawn="false">
+  <node name="console_record_pi" pkg="remote_rosbag_record" type="record" respawn="false">
         <param name="record_all" value="true"/>
         <param name="prefix" value="console"/>
         <param name="apped_date" value="true"/>
   </node>
 
 
-  <node name="joy-record" pkg=remote_rosbag_record type="joy_listener">
+  <node name="joy_record_pi" pkg="remote_rosbag_record" type="joy_listener">
    <param name="start_button" value="8" />
    <param name="stop_button" value="11" />
   </node>
 </group>
-
+-->
 
 </launch>

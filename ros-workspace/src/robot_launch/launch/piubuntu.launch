@@ -2,19 +2,16 @@
 
 <!--  <arg name="model" default="/home/user/src/robot2/scripts/test.urdf.xacro"/> -->
 
+<!-- this is on ros2 now
   <arg name="model" default="/home/user/src/robot2/ros-workspace/src/robot_launch/urdf/test.urdf.xacro"/>
-
-
-
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
-
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-
+-->
     <include file="$(find robot_launch)/launch/joy.launch" > 
     </include>
 
-<!-- FIXME imu is broken after killing and restarting
+<!-- FIXME imu is broken after killing and restarting , and sometimes also without doing that...
     <include file="$(find robot_launch)/launch/mpu9250.launch" > 
     </include>
 
@@ -41,6 +38,17 @@
 <group ns="gps2">
 <node name="nmea_serial_driver_node" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen">
     <param name="port" value="/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller_D-if00-port0"/>
+    <param name="baud" value="9600" />
+    <param name="frame_id" value="gps" />
+    <param name="use_GNSS_time" value="False" />
+    <param name="time_ref_source" value="False" />
+    <param name="useRMC" value="False" />
+  </node>
+</group>
+
+<group ns="gps3">
+<node name="nmea_serial_driver_node" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="screen">
+    <param name="port" value="/dev/rfcomm0"/>
     <param name="baud" value="9600" />
     <param name="frame_id" value="gps" />
     <param name="use_GNSS_time" value="False" />

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # MPU6050 9-DoF Example Printout
 
 from mpu9250_i2c import *
