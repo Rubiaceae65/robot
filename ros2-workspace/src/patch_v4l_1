@@ -1,0 +1,86 @@
+diff --git a/include/v4l2_camera/v4l2_camera.hpp b/include/v4l2_camera/v4l2_camera.hpp
+index daffa57..5164ba2 100644
+--- a/include/v4l2_camera/v4l2_camera.hpp
++++ b/include/v4l2_camera/v4l2_camera.hpp
+@@ -49,9 +49,14 @@ private:
+   // Publisher used for intra process comm
+   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_pub_;
+   rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr info_pub_;
++  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_right_pub_;
++  rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr info_right_pub_;
++
+ 
+   // Publisher used for inter process comm
+   image_transport::CameraPublisher camera_transport_pub_;
++  image_transport::CameraPublisher camera_right_transport_pub_;
++
+ 
+   std::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_;
+ 
+diff --git a/src/v4l2_camera.cpp b/src/v4l2_camera.cpp
+index 21f9bf9..e82f50d 100644
+--- a/src/v4l2_camera.cpp
++++ b/src/v4l2_camera.cpp
+@@ -41,8 +41,15 @@ V4L2Camera::V4L2Camera(rclcpp::NodeOptions const & options)
+   if (options.use_intra_process_comms()) {
+     image_pub_ = create_publisher<sensor_msgs::msg::Image>("image_raw", 10);
+     info_pub_ = create_publisher<sensor_msgs::msg::CameraInfo>("camera_info", 10);
++    image_right_pub_ = create_publisher<sensor_msgs::msg::Image>("right_image_raw", 10);
++    info_right_pub_ = create_publisher<sensor_msgs::msg::CameraInfo>("right_camera_info", 10);
++
++
+   } else {
+-    camera_transport_pub_ = image_transport::create_camera_publisher(this, "image_raw");
++
++     camera_transport_pub_ = image_transport::create_camera_publisher(this, "image_raw");
++     camera_right_transport_pub_ = image_transport::create_camera_publisher(this, "right_image_raw");
++
+   }
+ 
+   // Prepare camera
+@@ -56,6 +63,7 @@ V4L2Camera::V4L2Camera(rclcpp::NodeOptions const & options)
+     return;
+   }
+ 
++  //TODO
+   cinfo_ = std::make_shared<camera_info_manager::CameraInfoManager>(this, camera_->getCameraName());
+ 
+   // Read parameters and set up callback
+@@ -82,6 +90,9 @@ V4L2Camera::V4L2Camera(rclcpp::NodeOptions const & options)
+         if (img->encoding != output_encoding_) {
+           img = convert(*img);
+         }
++
++	// here we have the image encoded for ros, now have to crop it
++
+         img->header.stamp = stamp;
+         img->header.frame_id = camera_frame_id_;
+ 
+@@ -98,8 +109,14 @@ V4L2Camera::V4L2Camera(rclcpp::NodeOptions const & options)
+           RCLCPP_DEBUG_STREAM(get_logger(), "Image message address [PUBLISH]:\t" << img.get());
+           image_pub_->publish(std::move(img));
+           info_pub_->publish(std::move(ci));
++	  image_right_pub_->publish(std::move(img));
++          info_right_pub_->publish(std::move(ci));
++
++
+         } else {
+           camera_transport_pub_.publish(*img, *ci);
++          camera_right_transport_pub_.publish(*img, *ci);
++
+         }
+       }
+     }
+diff --git a/src/v4l2_camera_device.cpp b/src/v4l2_camera_device.cpp
+index ec451be..39acbc4 100644
+--- a/src/v4l2_camera_device.cpp
++++ b/src/v4l2_camera_device.cpp
+@@ -142,7 +142,7 @@ bool V4l2CameraDevice::open()
+ 
+ bool V4l2CameraDevice::start()
+ {
+-  RCLCPP_INFO(rclcpp::get_logger("v4l2_camera"), "Starting camera");
++  RCLCPP_INFO(rclcpp::get_logger("v4l2_camera"), "Starting camera Testje");
+   if (!initMemoryMapping()) {
+     return false;
+   }

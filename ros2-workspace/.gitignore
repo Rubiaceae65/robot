@@ -8,4 +8,5 @@ src/log/
 src/ps5eye/log/
 src/ps5eye/ps5eye/'
 src/ps5eye/ps5eye/camera_info_manager.py.1
+*.pyc
 

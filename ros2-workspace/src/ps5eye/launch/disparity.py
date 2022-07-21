@@ -155,8 +155,33 @@ def generate_launch_description():
 
 
             ),
- 
+            ComposableNode(
+                #min_height (double, default: 2.2e-308) - The minimum height to sample in the point cloud in meters.
+                #max_height (double, default: 1.8e+308) - The maximum height to sample in the point cloud in meters.
+                #angle_min (double, default: -π) - The minimum scan angle in radians.
+                #angle_max (double, default: π) - The maximum scan angle in radians.
+                #angle_increment (double, default: π/180) - Resolution of laser scan in radians per ray.
+                #queue_size (double, default: detected number of cores) - Input point cloud queue size.
+                #scan_time (double, default: 1.0/30.0) - The scan rate in seconds. Only used to populate the scan_time field of the output laser scan message.
+                #range_min (double, default: 0.0) - The minimum ranges to return in meters.
+                #range_max (double, default: 1.8e+308) - The maximum ranges to return in meters.
+                #target_frame (str, default: none) - If provided, transform the pointcloud into this frame before converting to a laser scan. Otherwise, laser scan will be generated in the same frame as the input point cloud.
+                #transform_tolerance (double, default: 0.01) - Time tolerance for transform lookups. Only used if a target_frame is provided.
+                #use_inf (boolean, default: true) - If disabled, report infinite range (no obstacle) as range_max + 1. Otherwise report infinite range as +inf.
+                package='pointcloud_to_laserscan',
+                node_plugin='pointcloud_to_laserscan::PointcloudToLaserScanNode',
+                namespace='ps5eye',
+                node_name='pointcloud_to_laserscan',
+                remappings=[
+                    ('left/image_rect_color', 'left/image_rect'),
+                ],
+ 		parameters=[
+		 {"approximate_sync": True},
+	  	]
 
+
+            ),
+ 
 
             ])
 
@@ -171,7 +196,20 @@ def generate_launch_description():
             name='robot_state_publisher',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
-            arguments=[urdf]), 
+            arguments=[urdf]
+            ), 
+        actions.Node(
+            #package='ps5eye',
+            executable='/home/user/src/robot2/ros2-workspace/src/ps5eye/ps5eye/publish_info.py',
+            name='publish_info_ps5eye',
+            output='screen'
+            ),  
+        actions.Node(
+            executable='/home/user/src/robot2/ros2-workspace/src/ps5eye/scripts/gstcam.sh',
+            name='gstcam',
+            output='screen'
+            ), 
+ 
         #actions.Node(
         #    package = "tf2_ros", 
         #    executable = "static_transform_publisher",

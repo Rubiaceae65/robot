@@ -27,4 +27,4 @@ ros-workspace/src/cartographer/
 ros-workspace/src/common_sensors/
 ros-workspace/src/robaka-ros/
 ros-workspace/src/rtabmap_ros_isinapt/
-
+.catkin_tools
