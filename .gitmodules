@@ -106,3 +106,6 @@
 [submodule "ros2-workspace/src/ros2_v4l2_camera"]
 	path = ros2-workspace/src/ros2_v4l2_camera
 	url = https://gitlab.com/boldhearts/ros2_v4l2_camera.git
+[submodule "ros2-workspace/src/ros2_mpu9250_driver"]
+	path = ros2-workspace/src/ros2_mpu9250_driver
+	url = git@github.com:Rubiaceae65/ros2_mpu9250_driver.git

@@ -3,6 +3,10 @@
 #ROS_MASTER_URI
 . /opt/ros/noetic/setup.bash
 
+cd /home/user/src/robot2/ros-workspace
+
+rosdep install --rosdistro noetic --from-paths src/ -r --ignore-src -y
+
 #CMAKE_ARGS='-Dfreenect2_DIR=/srv/freenect2/lib/cmake/freenect2 -DCMAKE_BUILD_TYPE="Release"'
 CMAKE_ARGS='-Dfreenect2_DIR=/srv/freenect2/lib/cmake/freenect2"'
 #CMAKE_ARGS=''
@@ -54,7 +58,10 @@ echo "building for $TARGETPLATFORM "
 #catkin build --force-cmake
 if [[ $TARGETPLATFORM == "linux/amd64" ]]
 then
-  catkin build --cmake-args="\'${CMAKE_ARGS}\'"  ps5eye gscam -DGSTREAMER_VERSION_1_x=On
+ catkin build robot_launch hoverboard_driver teleop_twist_web 
+
+ 
+#catkin build --cmake-args="\'${CMAKE_ARGS}\'"  ps5eye gscam -DGSTREAMER_VERSION_1_x=On
 
   #catkin build --cmake-args="\'${CMAKE_ARGS}\'"  kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer
 #  catkin build kinect2_bridge kinect2_calibration kinect2_registration kinect2_viewer robot_launch hoverboard_driver teleop_twist_web 

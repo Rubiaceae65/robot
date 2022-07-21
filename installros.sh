@@ -9,7 +9,7 @@ sudo apt update
 
 sudo apt install ros-noetic-desktop-full
 
-sudo apt install python3-rosdep
+sudo apt install python3-rosdep ros-noetic-rosparam-shortcuts
 
 
 sudo rosdep init
