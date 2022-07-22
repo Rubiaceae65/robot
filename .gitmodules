@@ -109,3 +109,9 @@
 [submodule "ros2-workspace/src/ros2_mpu9250_driver"]
 	path = ros2-workspace/src/ros2_mpu9250_driver
 	url = git@github.com:Rubiaceae65/ros2_mpu9250_driver.git
+[submodule "ros2-workspace/ros-calibration_imu"]
+	path = ros2-workspace/ros-calibration_imu
+	url = https://github.com/pcdangio/ros-calibration_imu.git
+[submodule "ros-workspace/ros-calibration_imu"]
+	path = ros-workspace/ros-calibration_imu
+	url = https://github.com/pcdangio/ros-calibration_imu.git
