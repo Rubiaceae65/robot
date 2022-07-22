@@ -15,10 +15,11 @@
     <include file="$(find robot_launch)/launch/mpu9250.launch" > 
     </include>
 
+-->
 
+<!--
     <include file="$(find robot_launch)/launch/hoverboard.launch" > 
     </include>
-
 -->
 <group ns="gps1">
 

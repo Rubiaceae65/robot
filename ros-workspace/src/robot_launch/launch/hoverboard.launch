@@ -3,6 +3,12 @@
 
   <!-- Hoverboard driver  /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 -->
 
+<arg name="model" default="/home/user/src/robot2/ros2-workspace/src/robot2_description/src/description/robot2.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> 
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
     <param name="port" type="str" value="/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 "/>
 
     <rosparam file="$(find robot_launch)/config/hoverboard.hardware.yaml" command="load"/>
