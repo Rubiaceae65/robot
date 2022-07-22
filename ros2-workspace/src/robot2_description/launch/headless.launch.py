@@ -23,14 +23,17 @@ def generate_launch_description():
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
+        parameters=[{'robot_description':launch_ros.parameter_descriptions.ParameterValue(Command(['xacro ', LaunchConfiguration('model')]), value_type=str)}]
+
     )
       # Start robot localization using an Extended Kalman filter
     robot_localization = Node(
         package='robot_localization',
         executable='ekf_node',
         name='ekf_filter_node',
-        output='screen',
+        #output='screen',
         parameters=[robot_localization_file_path])
+
 
 
     return launch.LaunchDescription([
@@ -38,6 +41,6 @@ def generate_launch_description():
                                             description='Absolute path to robot urdf file'),
 
         robot_state_publisher_node,
-  #      joint_state_publisher_node,
+        joint_state_publisher_node,
         robot_localization
     ])

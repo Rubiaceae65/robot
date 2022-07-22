@@ -58,7 +58,7 @@ echo "building for $TARGETPLATFORM "
 #catkin build --force-cmake
 if [[ $TARGETPLATFORM == "linux/amd64" ]]
 then
- catkin build robot_launch hoverboard_driver teleop_twist_web 
+ catkin build robot_launch hoverboard_driver teleop_twist_web calibration_imu
 
  
 #catkin build --cmake-args="\'${CMAKE_ARGS}\'"  ps5eye gscam -DGSTREAMER_VERSION_1_x=On
