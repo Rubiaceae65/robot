@@ -23,7 +23,7 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-namespace ros2_control_demo_hardware
+namespace ros2_hoverboard
 {
 hardware_interface::return_type DiffBotSystemHardware::configure(
   const hardware_interface::HardwareInfo & info)
@@ -207,7 +207,7 @@ hardware_interface::return_type DiffBotSystemHardware::read()
   return hardware_interface::return_type::OK;
 }
 
-hardware_interface::return_type ros2_control_demo_hardware::DiffBotSystemHardware::write()
+hardware_interface::return_type ros2_hoverboard::DiffBotSystemHardware::write()
 {
   RCLCPP_INFO(rclcpp::get_logger("DiffBotSystemHardware"), "Writing...");
 
@@ -227,4 +227,4 @@ hardware_interface::return_type ros2_control_demo_hardware::DiffBotSystemHardwar
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(
-  ros2_control_demo_hardware::DiffBotSystemHardware, hardware_interface::SystemInterface)
+  ros2_hoverboard::DiffBotSystemHardware, hardware_interface::SystemInterface)

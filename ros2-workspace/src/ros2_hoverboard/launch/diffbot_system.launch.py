@@ -63,6 +63,10 @@ def generate_launch_description():
             "stdout": "screen",
             "stderr": "screen",
         },
+#        remappings=[
+#            ('/diffbot_base_controller/cmd_vel_unstamped', '/joy_vel'),
+#            ]
+
     )
 
     spawn_dd_controller = Node(
@@ -70,6 +74,11 @@ def generate_launch_description():
         executable="spawner.py",
         arguments=["diffbot_base_controller"],
         output="screen",
+#        remappings=[
+#         ('/diffbot_base_controller/cmd_vel_unstamped', '/joy_vel'),
+#        ]
+
+
     )
     spawn_jsb_controller = Node(
         package="controller_manager",

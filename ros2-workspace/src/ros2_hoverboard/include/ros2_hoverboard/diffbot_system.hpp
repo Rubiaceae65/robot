@@ -28,7 +28,7 @@
 #include "rclcpp/macros.hpp"
 #include "ros2_hoverboard/visibility_control.h"
 
-namespace ros2_control_demo_hardware
+namespace ros2_hoverboard
 {
 class DiffBotSystemHardware
 : public hardware_interface::BaseInterface<hardware_interface::SystemInterface>
