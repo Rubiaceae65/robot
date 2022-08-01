@@ -116,6 +116,7 @@ def generate_launch_description():
                 remappings=[
                     ('image', 'left/image_raw'),
                     ('camera_info', 'left/camera_info'),
+                    ('/ps5eye/camera_info', '/ps5eye/left/camera_info'),
                     ('image_rect', 'left/image_rect')
                 ],
             ),
@@ -127,6 +128,7 @@ def generate_launch_description():
                 remappings=[
                     ('image', 'right/image_raw'),
                     ('camera_info', 'right/camera_info'),
+                    ('/ps5eye/camera_info', '/ps5eye/right/camera_info'),
                     ('image_rect', 'right/image_rect')
                 ],
             ),
