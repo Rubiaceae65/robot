@@ -13,13 +13,13 @@
 
     <rosparam file="$(find robot_launch)/config/hoverboard.hardware.yaml" command="load"/>
     <rosparam file="$(find robot_launch)/config/hoverboard.controllers.yaml" command="load"/>
-    <rosparam file="$(find robot_launch)/config/hoverboard.pid.yaml" command="load"/>
+<!--    <rosparam file="$(find robot_launch)/config/hoverboard.pid.yaml" command="load"/> -->
 
 
     <node name="hoverboard_driver" pkg="hoverboard_driver" type="hoverboard_driver" output="screen" respawn="true" respawn_delay="10" />
 
 
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/"
-        args="hoverboard_joint_publisher hoverboard_velocity_controller" />
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" ns="/"
+        args="hoverboard_joint_publisher hoverboard_velocity_controller" respawn="true" respawn_delay="10" />
 
 </launch>
