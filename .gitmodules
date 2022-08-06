@@ -115,3 +115,9 @@
 [submodule "ros-workspace/ros-calibration_imu"]
 	path = ros-workspace/ros-calibration_imu
 	url = https://github.com/pcdangio/ros-calibration_imu.git
+[submodule "ros2-workspace/ros2-ORB_SLAM2"]
+	path = ros2-workspace/ros2-ORB_SLAM2
+	url = https://github.com/alsora/ros2-ORB_SLAM2.git
+[submodule "ros2-workspace/rosboard"]
+	path = ros2-workspace/rosboard
+	url = https://github.com/dheera/rosboard.git

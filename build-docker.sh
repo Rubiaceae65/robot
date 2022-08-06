@@ -96,13 +96,17 @@ function b () {
 
 #b ros-base ./docker docker/base.Dockerfile
 #b fromsrc ./docker docker/fromsrc.Dockerfile
-b ros-alpine ./ docker/alpine.Dockerfile
+#b ros-alpine ./ docker/alpine.Dockerfile
 
 #b mini-withbase ./ docker/mini-withbase.Dockerfile
+b ros2 ./ docker/ros2.Dockerfile
+
+
+
 MA=0
 
 
-b gazebo ./docker docker/gazebo.Dockerfile
+#b gazebo ./docker docker/gazebo.Dockerfile
 
 
 #b mini ./ docker/mini.Dockerfile

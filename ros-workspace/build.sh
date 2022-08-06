@@ -37,7 +37,7 @@ if [ -z ${TARGETPLATFORM+x} ];
  else 
 
 	 INDOCKER=1
-	 echo "in docker, var is set to '$var'"; 
+	 echo "in docker"; 
 	#rosdep install --from-paths src --ignore-src -r -y
 	du -lh /ccache > /home/user/ccache-before.txt
 	ls -lhtr ../
@@ -58,7 +58,8 @@ echo "building for $TARGETPLATFORM "
 #catkin build --force-cmake
 if [[ $TARGETPLATFORM == "linux/amd64" ]]
 then
- catkin build robot_launch hoverboard_driver teleop_twist_web calibration_imu
+ catkin build robot_launch hoverboard_driver teleop_twist_web 
+ #calibration_imu
 
  
 #catkin build --cmake-args="\'${CMAKE_ARGS}\'"  ps5eye gscam -DGSTREAMER_VERSION_1_x=On
