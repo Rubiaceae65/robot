@@ -121,3 +121,6 @@
 [submodule "ros2-workspace/rosboard"]
 	path = ros2-workspace/rosboard
 	url = https://github.com/dheera/rosboard.git
+[submodule "ros-workspace/src/ros-calibration_imu"]
+	path = ros-workspace/src/ros-calibration_imu
+	url = https://github.com/pcdangio/ros-calibration_imu.git
