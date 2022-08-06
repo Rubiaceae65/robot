@@ -1,19 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
-    <transport_descriptors>
-        <!-- Create a descriptor for the new transport -->
-        <transport_descriptor>
-            <transport_id>shm_transport</transport_id>
-            <type>SHM</type>
-        </transport_descriptor>
-    </transport_descriptors>
+	<transport_descriptors>
+		<transport_descriptor>
+			<transport_id>udp_transport_custom</transport_id>
+			<type>UDPv4</type>
+				<!--
+					<sendBufferSize> 16384 </sendBufferSize>
+					<receiveBufferSize> 16384 </receiveBufferSize>
+					<TTL>250</TTL>
+				-->
+					<non_blocking_send>true</non_blocking_send>
 
-    <participant profile_name="SHMParticipant" is_default_profile="true">
-        <rtps>
-            <!-- Link the Transport Layer to the Participant -->
-            <userTransports>
-                <transport_id>shm_transport</transport_id>
-            </userTransports>
-        </rtps>
-    </participant>
-</profiles>
+						<!--<maxMessageSize>118192</maxMessageSize>-->
+						<maxInitialPeersRange>2</maxInitialPeersRange>
+					</transport_descriptor>
+
+					<transport_descriptor>
+						<transport_id>shm_transport</transport_id>
+						<type>SHM</type>
+							<!--<segment_size>64991</segment_size>
+							<maxMessageSize>64999</maxMessageSize>-->
+						</transport_descriptor>
+
+					</transport_descriptors>
+					<participant profile_name="SHMParticipant" is_default_profile="true">
+						<rtps>
+							<useBuiltinTransports>false</useBuiltinTransports>
+							<userTransports>
+								<transport_id>udp_transport_custom</transport_id>
+								<transport_id>shm_transport</transport_id> 
+							</userTransports>
+						</rtps>
+						<!--        <sendSocketBufferSize>8192</sendSocketBufferSize> 
+						<listenSocketBufferSize>8192</listenSocketBufferSize> -->  
+					</participant>
+					<!--
+					<subscriber profile_name="default subscriber profile" is_default_profile="true">
+						<qos>
+							<durability>
+								<kind>PERSISTENT</kind>
+							</durability>
+							<liveliness>
+								<kind>MANUAL_BY_PARTICIPANT</kind>
+								<lease_duration>
+									<sec>1</sec>
+									<nanosec>856000</nanosec>
+								</lease_duration>
+								<announcement_period>
+									<sec>1</sec>
+									<nanosec>856000</nanosec>
+								</announcement_period>
+							</liveliness>
+							<reliability>
+								<kind>BEST_EFFORT</kind>
+								<max_blocking_time>
+									<sec>1</sec>
+									<nanosec>856000</nanosec>
+								</max_blocking_time>
+							</reliability>
+						</qos>
+
+						<historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+					</subscriber>
+					-->
+					<publisher profile_name="default publisher profile" is_default_profile="true">
+						<qos>
+							<publishMode>
+								<kind>SYNCHRONOUS</kind>
+							</publishMode>
+						</qos>
+						<historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+
+					</publisher>
+				</profiles>
+					    <library_settings>
+						            <intraprocess_delivery>FULL</intraprocess_delivery> <!-- OFF | USER_DATA_ONLY | FULL -->
+								        </library_settings>

@@ -170,8 +170,11 @@ def generate_launch_description():
                 #target_frame (str, default: none) - If provided, transform the pointcloud into this frame before converting to a laser scan. Otherwise, laser scan will be generated in the same frame as the input point cloud.
                 #transform_tolerance (double, default: 0.01) - Time tolerance for transform lookups. Only used if a target_frame is provided.
                 #use_inf (boolean, default: true) - If disabled, report infinite range (no obstacle) as range_max + 1. Otherwise report infinite range as +inf.
+                #pointcloud_to_laserscan
+                #    pointcloud_to_laserscan::PointCloudToLaserScanNode
+
                 package='pointcloud_to_laserscan',
-                node_plugin='pointcloud_to_laserscan::PointcloudToLaserScanNode',
+                node_plugin='pointcloud_to_laserscan::PointCloudToLaserScanNode',
                 namespace='ps5eye',
                 node_name='pointcloud_to_laserscan',
                 remappings=[
