@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-colcon build --symlink-install --packages-select ros2_hoverboard
+colcon build --install-base /home/user/src/robot2/ros2-workspace/install/ --symlink-install --packages-select ros2_shared ros2_hoverboard mpu9250_python opencv_cam ps5eye robot2_description ros2_v4l2_camera audio_msgs gst_bridge gst_pipeline rtabmap_ros
+
