@@ -114,6 +114,7 @@ def generate_launch_description():
                 namespace='ps5eye',
                 node_name='rectify_left',
                 remappings=[
+                    ('image_rect/compressed', 'left/image_rect/compressed'), 
                     ('image', 'left/image_raw'),
                     ('camera_info', 'left/camera_info'),
                     ('/ps5eye/camera_info', '/ps5eye/left/camera_info'),
@@ -126,6 +127,7 @@ def generate_launch_description():
                 namespace='ps5eye',
                 node_name='rectify_right',
                 remappings=[
+                    ('image_rect/compressed', 'right/image_rect/compressed'), 
                     ('image', 'right/image_raw'),
                     ('camera_info', 'right/camera_info'),
                     ('/ps5eye/camera_info', '/ps5eye/right/camera_info'),

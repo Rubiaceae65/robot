@@ -127,3 +127,6 @@
 [submodule "firmware/Some_RPI-Pico_stuff"]
 	path = firmware/Some_RPI-Pico_stuff
 	url = https://github.com/GitJer/Some_RPI-Pico_stuff.git
+[submodule "ros2-workspace/src/rtabmap_ros"]
+	path = ros2-workspace/src/rtabmap_ros
+	url = https://github.com/introlab/rtabmap_ros.git
