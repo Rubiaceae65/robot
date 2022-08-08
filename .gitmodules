@@ -124,3 +124,6 @@
 [submodule "ros-workspace/src/ros-calibration_imu"]
 	path = ros-workspace/src/ros-calibration_imu
 	url = https://github.com/pcdangio/ros-calibration_imu.git
+[submodule "firmware/Some_RPI-Pico_stuff"]
+	path = firmware/Some_RPI-Pico_stuff
+	url = https://github.com/GitJer/Some_RPI-Pico_stuff.git
