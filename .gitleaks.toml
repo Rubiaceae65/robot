@@ -10,6 +10,11 @@ useDefault = true
 [allowlist]
 description = "Placeholders and template files, not real credentials"
 
+# Without this, `regexes` below are matched against the whole matched line
+# (`token": "REDACTED"`) rather than the captured value, and every anchored
+# pattern silently fails to fire.
+regexTarget = "secret"
+
 # Values that are self-evidently not secrets. Anchored, so a real key that
 # merely contains "test" is still reported.
 regexes = [
