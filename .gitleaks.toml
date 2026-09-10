@@ -1,0 +1,28 @@
+# Installed by atelier-ci. Extends the stock gitleaks ruleset rather than
+# replacing it - `useDefault = true` keeps every built-in detector.
+#
+# Add repo-specific exceptions to the bottom of this file. It is a normal
+# tracked file, so an exception is reviewable in the diff instead of being an
+# invisible flag on a command line.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholders and template files, not real credentials"
+
+# Values that are self-evidently not secrets. Anchored, so a real key that
+# merely contains "test" is still reported.
+regexes = [
+  '''(?i)^(redacted|changeme|change[-_]me|placeholder|example|dummy|sample|secret|password|todo|none|null|xxx+|\*+|\.\.\.)$''',
+  '''(?i)^(your|my|the)[-_ ]?(api[-_ ]?)?(key|token|secret|password)$''',
+  '''^<[^>]+>$''',
+  '''^\$\{[^}]+\}$''',
+]
+
+# Template files exist to be filled in; a "credential" in one is the shape of a
+# credential, not a credential.
+paths = [
+  '''(?i).*\.(example|sample|template|dist)$''',
+  '''(?i).*\.(example|sample|template)\.[a-z0-9]+$''',
+  '''(?i)(^|/)(example|sample|template)s?/.*''',
+]
