@@ -1,0 +1,8 @@
+# Installed by atelier-ci. Dependabot alerts and version updates are
+# free on private repos - unlike Code Scanning and Secret Scanning.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 3

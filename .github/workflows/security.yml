@@ -1,0 +1,20 @@
+# Installed by atelier-ci (scripts/install.sh). Do not edit here - edit the
+# template in Rubiaceae65/atelier-ci and re-run the installer.
+name: security
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # Weekly sweep. Scheduled runs only ever fire from the default branch, and
+    # on a Free private repo they are suspended after 60 days of inactivity.
+    - cron: '3 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    uses: Rubiaceae65/atelier-ci/.github/workflows/security.yml@main
